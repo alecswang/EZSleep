@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 50,
         justifyContent: "center",
+        color: '#fff',
     },
     //Back Button
     backButton: {

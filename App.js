@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     justifyContent: "center",
+    color: '#ff'
   },
   //Setting Button
   settingButton: {

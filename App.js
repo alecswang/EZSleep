@@ -1,14 +1,16 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View, Button } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SettingScreen from './Setting';
+import ProfileScreen from './Profile';
 
 //Index/Main Page
 const IndexScreen = () => {
   const nav = useNavigation();
   return (
     <View style={styles.layout}>
-      <Text style={styles.title}>IndexScreen</Text>
+      {/* <Text style={styles.title}>EZ Sleep </Text> */}
 
       {/* Nav to Profile Page */}
       <Pressable 
@@ -35,43 +37,16 @@ const IndexScreen = () => {
   );
 };
 
-//Profile Page
-const ProfileScreen = () => (
-  <View style={styles.layout}>
-    <Text style={styles.title}>Profile</Text>
-  </View>
-);
-
-//Setting Page
-const SettingScreen = () => (
-  <View style={styles.layout}>
-    <Text style={styles.title}>Setting</Text>
-  </View>
-);
-
 const Stack = createStackNavigator();
 
 //Navigation Controls
 export const AppNavigator = () => (
   <Stack.Navigator
     screenOptions={{
-      // headerShown: false
-        
+      headerShown: false
     }}
   >
-    <Stack.Screen
-    name="Index"
-    component={IndexScreen}
-    // I was testing how to make the header invisible while being able to use the button - Alex
-    // options={{
-    //   headerStyle: {
-    //     backgroundColor: '#654CE0'
-    //   },
-    //   headerRight: () => (
-    //     <Button title="Update count" />
-    //   ),
-    // }}
-    />
+    <Stack.Screen name="Index" component={IndexScreen} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Setting" component={SettingScreen} />
   </Stack.Navigator>
@@ -99,16 +74,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     marginBottom: 16,
-  },
-  //Profile Button
-  profileButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#654CE0",
-    position: 'absolute',
-    top: 150,
-    left: 50,
+    position: "absolute",
+    top: 50,
+    justifyContent: "center",
   },
   //Setting Button
   settingButton: {
@@ -117,8 +85,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "#654CE0",
     position: 'absolute',
-    top: 150,
+    top: 100,
     right: 50,
+  },
+  //Profile Button
+  profileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#654CE0",
+    position: 'absolute',
+    top: 100,
+    left: 50,
   },
   //Images
   profileImage: {
@@ -130,5 +108,18 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  // Light/Dark Mode
+  lightContainer: {
+    backgroundColor: '#d0d0c0',
+  },
+  darkContainer: {
+    backgroundColor: '#242c40',
+  },
+  lightThemeText: {
+    color: '#242c40',
+  },
+  darkThemeText: {
+    color: '#d0d0c0',
   },
 });

@@ -1,16 +1,34 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
-
 //Profile Page
-const ProfileScreen = () => {
+const RegisterScreen = () => {
     const nav = useNavigation();
     return (
     <View style={styles.layout}>
-      <Text style={styles.title}>Profile</Text>
+        <Text style={styles.title}>Register</Text>
+        <TextInput
+        //   value={this.state.username}
+        //   onChangeText={(username) => this.setState({ username })}
+          placeholder={'Username'}
+          style={styles.input}
+        />
+        <TextInput
+        //   value={this.state.password}
+        //   onChangeText={(password) => this.setState({ password })}
+          placeholder={'Password'}
+          secureTextEntry={true}
+          style={styles.input}
+        />
+        
+        <Button
+          title={'Register'}
+          style={styles.input}
+        //   onPress={this.onLogin.bind(this)}
+        />
+
       {/* Nav to Index Page */}
       <Pressable 
         onPress={()=>nav.navigate('Index')}
@@ -25,7 +43,7 @@ const ProfileScreen = () => {
     )
 };
 
-export default ProfileScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
     //general Layout
@@ -49,15 +67,23 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: "#654CE0",
         position: 'absolute',
         top: 70,
-        right: 20,
+        left: 20,
     },
     //Images
   backImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  // input
+  input: {
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginBottom: 50,
   },
 });

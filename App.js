@@ -4,6 +4,8 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SettingScreen from './Setting';
 import ProfileScreen from './Profile';
+import LoginScreen from './Login';
+import RegisterScreen from './Register';
 
 //Index/Main Page
 const IndexScreen = () => {
@@ -18,7 +20,7 @@ const IndexScreen = () => {
         style={styles.profileButton}
       >
         <Image
-          style={styles.profileImage}
+          style={styles.iconImage}
           source={require('./assets/Profile.png')}
         ></Image>
       </Pressable>
@@ -29,8 +31,19 @@ const IndexScreen = () => {
         style={styles.settingButton}
       >
         <Image
-          style={styles.settingImage}
+          style={styles.iconImage}
           source={require('./assets/Setting.png')}
+        ></Image>
+      </Pressable>
+
+      {/* Nav to Login Page */}
+      <Pressable 
+        onPress={()=>nav.navigate('Login')}
+        style={styles.loginButton}
+      >
+        <Image
+          style={styles.iconImage}
+          source={require('./assets/favicon.png')}
         ></Image>
       </Pressable>
     </View>
@@ -49,6 +62,8 @@ export const AppNavigator = () => (
     <Stack.Screen name="Index" component={IndexScreen} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Setting" component={SettingScreen} />
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="Register" component={RegisterScreen} />
   </Stack.Navigator>
 );
 
@@ -99,13 +114,17 @@ const styles = StyleSheet.create({
     top: 100,
     left: 50,
   },
-  //Images
-  profileImage: {
+  //Login Button
+  loginButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    backgroundColor: "#654CE0",
+    position: 'absolute',
+    top: 200,
   },
-  settingImage: {
+  //Images
+  iconImage: {
     width: 40,
     height: 40,
     borderRadius: 20,

@@ -22,12 +22,12 @@ const RegisterScreen = () => {
           secureTextEntry={true}
           style={styles.input}
         />
-        
-        <Button
-          title={'Register'}
-          style={styles.input}
-        //   onPress={this.onLogin.bind(this)}
-        />
+        <Pressable
+          style={styles.button}
+          //   onPress={this.onLogin.bind(this)}
+        >
+          <Text style={styles.text}>Register</Text>
+        </Pressable>
 
       {/* Nav to Index Page */}
       <Pressable 
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 70,
         left: 20,
+        backgroundColor: 'gold',
     },
     //Images
   backImage: {
@@ -82,8 +83,29 @@ const styles = StyleSheet.create({
     width: 200,
     height: 44,
     padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 50,
+    borderWidth: 3,
+    borderColor: 'grey',
+    marginBottom: 30,
+    backgroundColor: 'white'
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  button: {
+    width: 100,
+    height: 44,
+    padding: 5,
+    borderWidth: 3,
+    borderColor: 'grey',
+    marginBottom: 20,
+    backgroundColor: 'grey',
+    elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
   },
 });

@@ -1,31 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View, Switch } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+  interpolateColor,
+  useDerivedValue,
+} from 'react-native-reanimated';
 
 //Setting Page
   const backImg = require('./assets/back-arrow.png');
   
 const SettingScreen = () => {
 
-  //Dark/Light Mode
+    // Dark/Light Mode
     const [darkEnabled, setdarkEnabled] = useState(false);
     const toggleSwitch = () => setdarkEnabled(previousState => !previousState);
 
-  // Back arrow button
+    // Back arrow button
     const nav = useNavigation();
 
+    // general code used for animations
+    const progress = useDerivedValue(() => {
+      return darkEnabled ? withTiming(1) : withTiming(0)
+    })
+    // Animation for background
+    const backgroundAnimation = useAnimatedStyle(() => {
+      const backgroundColor = interpolateColor(
+        progress.value,
+        [0, 1], 
+        [Colors.light.background, Colors.dark.background]
+      );
+      return {
+        backgroundColor
+      };
+    });
+    // Animation for textColors
+    const textAnimation = useAnimatedStyle(() => {
+      const color = interpolateColor(
+        progress.value,
+        [0, 1], 
+        [Colors.light.text, Colors.dark.text]
+      );
+      return {
+        color
+      };
+    });
+
+    const SWITCH_TRACK_COLOR = {
+      true: "#81b0ff",
+      false: "#767577",
+    };
+
+    const SWITCH_THUMB_COLOR = {
+      true: "#000",
+      false: "#fff",
+    };
+
+
   return (
-    <View style={[styles.layout, darkEnabled && styles.layoutDark]}>
+    <Animated.View style={[styles.layout, backgroundAnimation]}>
       <View style={styles.options}>
-        <Text style={[styles.ligtDrkText, styles.text, darkEnabled && styles.textDark]}>Light/Dark Mode Toggle</Text>
+        <Animated.Text style={[styles.lightDarkText, styles.text, textAnimation]}>Light/Dark Mode Toggle</Animated.Text>
         <Switch
-          style={styles.switch}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={darkEnabled ? "#fff" : "#fff"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
           value={darkEnabled}
+          onValueChange={toggleSwitch}
+          trackColor={SWITCH_TRACK_COLOR}
+          thumbColor={SWITCH_THUMB_COLOR}
+          ios_backgroundColor="#3e3e3e"
+          style={styles.switch}
         />
       </View>
 
@@ -40,29 +86,34 @@ const SettingScreen = () => {
       ></Image>
       </Pressable>
       {/* DarkMode Switch */}
-    </View>
+    </Animated.View>
   )
 };
-  
   export default SettingScreen;
 
+// Colors for switching themes
+const Colors = {
+  dark: {
+    background : "#654CE0",
+    text : "#fff",
+  },
+  light: {
+    background : "#7974E8",
+    text : "#000",
+  },
+}
+
 //Stylesheet
-const lightColor1 = "#7974E8";
-const white = "#000";
-const darkColor1 = "#654CE0";
-const grey = "#d1d1d1";
 const styles = StyleSheet.create({
   //general Layout
   layout: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: lightColor1,
   },
   //general Text
   text: { 
     fontSize: 20,
-    color: white,
   },
   //Back Button
   backButton: {
@@ -85,26 +136,15 @@ const styles = StyleSheet.create({
     right: 40,
   },
   //Options: light/dark text
-  ligtDrkText: {
+  lightDarkText: {
     position: 'absolute',
     left: 40,
   },
-  //options container
+  // Options container
   options: {
     position: 'absolute',
     top: 230,
     width: '100%',
     fontSize: 20,
   },
-  //layout dark theme
-  layoutDark: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: darkColor1,
-  },
-  textDark: {
-    fontSize: 20,
-    color: grey,
-  }
 });

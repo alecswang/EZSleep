@@ -23,16 +23,18 @@ const LoginScreen = () => {
           style={styles.input}
         />
         
-        <Button
-          title={'Login'}
+        <Pressable
           style={styles.button}
-        //   onPress={this.onLogin.bind(this)}
-        />
-        <Button
-            title={'New User????'}
+          //onPress={this.onLogin.bind(this)}
+        >
+          <Text style={styles.text}>Login</Text>
+        </Pressable>
+        <Pressable
             style = {styles.button}
             onPress={()=>nav.navigate('Register')}
-        />
+        >
+          <Text style={styles.text}>New User</Text>
+        </Pressable>
       {/* Nav to Index Page */}
       <Pressable 
         onPress={()=>nav.navigate('Index')}
@@ -88,17 +90,28 @@ const styles = StyleSheet.create({
     height: 44,
     padding: 10,
     borderWidth: 3,
-    borderColor: 'yellow',
-    marginBottom: 30,
-    backgroundColor: 'white'
-  },
-  button: {
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 3,
-    borderColor: 'black',
+    borderColor: 'grey',
     marginBottom: 30,
     backgroundColor: 'white',
-  }
+  },
+  button: {
+    width: 100,
+    height: 44,
+    padding: 5,
+    borderWidth: 3,
+    borderColor: 'grey',
+    marginBottom: 20,
+    backgroundColor: 'grey',
+    elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 });

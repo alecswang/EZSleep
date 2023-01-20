@@ -1,145 +1,68 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SettingScreen from './Setting';
-import ProfileScreen from './Profile';
-import LoginScreen from './Login';
-import RegisterScreen from './Register';
 
-//Index/Main Page
-const IndexScreen = () => {
-  const nav = useNavigation();
-  return (
-    <View style={styles.layout}>
-      {/* <Text style={styles.title}>EZ Sleep </Text> */}
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import {firestore, auth} from './screens/firebase'
 
-      {/* Nav to Profile Page */}
-      <Pressable 
-        onPress={()=>nav.navigate('Profile')}
-        style={styles.profileButton}
-      >
-        <Image
-          style={styles.iconImage}
-          source={require('./assets/Profile.png')}
-        ></Image>
-      </Pressable>
+import SettingScreen from './screens/Setting';
+import ProfileScreen from './screens/Profile';
+import LoginScreen from './screens/Login';
+import RegisterScreen from './screens/Register';
+import IndexScreen from './screens/Index';
+import LoadingScreen from './screens/Loading';
 
-      {/* Nav to Setting Page */}
-      <Pressable 
-        onPress={()=>nav.navigate('Setting')}
-        style={styles.settingButton}
-      >
-        <Image
-          style={styles.iconImage}
-          source={require('./assets/Setting.png')}
-        ></Image>
-      </Pressable>
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC7dKQKFZrILaC7_BtowhFAzftrTijpyss",
+//   authDomain: "ezsleep-e4c57.firebaseapp.com",
+//   projectId: "ezsleep-e4c57",
+//   storageBucket: "ezsleep-e4c57.appspot.com",
+//   messagingSenderId: "493452915635",
+//   appId: "1:493452915635:web:b6dce4c98a5af63941d1c6",
+//   measurementId: "G-7LBEGZ9ZG7"
+// };
 
-      {/* Nav to Login Page */}
-      <Pressable 
-        onPress={()=>nav.navigate('Login')}
-        style={styles.loginButton}
-      >
-        <Image
-          style={styles.iconImage}
-          source={require('./assets/favicon.png')}
-        ></Image>
-      </Pressable>
-    </View>
-  );
-};
+console.log("hi");
 
+// Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
+//for navigation
 const Stack = createStackNavigator();
 
 //Navigation Controls
-export const AppNavigator = () => (
+const RootStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false
     }}
+    initialRouteName="Login"
   >
     <Stack.Screen name="Index" component={IndexScreen} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Setting" component={SettingScreen} />
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Screen name="Loading" component={LoadingScreen} />
   </Stack.Navigator>
 );
 
 //Entry Point
-const App = () => (
-  <NavigationContainer>
-    <AppNavigator />
-  </NavigationContainer>
-);
+class App extends React.Component{
+  render(){
+    return (
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    );
+  }
+};
 
 export default App;
 
-//Stylesheet
-const styles = StyleSheet.create({
-  //general Layout
-  layout: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: "#654CE0",
-  },
-  //Testing purpose
-  title: {
-    fontSize: 32,
-    marginBottom: 16,
-    position: "absolute",
-    top: 50,
-    justifyContent: "center",
-    color: '#ff'
-  },
-  //Setting Button
-  settingButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#654CE0",
-    position: 'absolute',
-    top: 100,
-    right: 50,
-  },
-  //Profile Button
-  profileButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#654CE0",
-    position: 'absolute',
-    top: 100,
-    left: 50,
-  },
-  //Login Button
-  loginButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#654CE0",
-    position: 'absolute',
-    top: 200,
-  },
-  //Images
-  iconImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  // Light/Dark Mode
-  lightContainer: {
-    backgroundColor: '#d0d0c0',
-  },
-  darkContainer: {
-    backgroundColor: '#242c40',
-  },
-  lightThemeText: {
-    color: '#242c40',
-  },
-  darkThemeText: {
-    color: '#d0d0c0',
-  },
-});

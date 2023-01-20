@@ -8,7 +8,7 @@ import 'firebase/compat/firestore';
 export default class LoadingScreen extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? "Index" : "Register");
+      this.props.navigation.navigate(user ? "Index" : "Login");
     });
   }
   render() {

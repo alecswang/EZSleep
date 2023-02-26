@@ -12,8 +12,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 //Setting Page
-  const backImg = require('../assets/back-arrow.png');
+const backImg = require('../assets/back-arrow.png');
   
+// class SettingScreen extends React.Component {
 const SettingScreen = () => {
 
     // Dark/Light Mode
@@ -61,7 +62,8 @@ const SettingScreen = () => {
     };
 
 
-  return (
+  // render(){
+    return (
     <Animated.View style={[styles.layout, backgroundAnimation]}>
       <View style={styles.options}>
         <Animated.Text style={[styles.lightDarkText, styles.text, textAnimation]}>Light/Dark Mode Toggle</Animated.Text>
@@ -87,7 +89,9 @@ const SettingScreen = () => {
       </Pressable>
       {/* DarkMode Switch */}
     </Animated.View>
-  )
+
+    )
+  // }
 };
   export default SettingScreen;
 

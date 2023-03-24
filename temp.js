@@ -2,18 +2,11 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import BottomNav from "./navigation/BottomNav.js";
-import { createStackNavigator } from "@react-navigation/stack";
+import BottomNav from "./navigation/BottomNav";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { firestore, auth } from "./screens/firebase";
-
-import LoadingScreen from "./screens/Loading";
-import LoginScreen from "./screens/Login";
-import RegisterScreen from "./screens/Register";
-
-const Stack = createStackNavigator();
 
 //Entry Point
 class App extends React.Component {
@@ -35,18 +28,7 @@ class App extends React.Component {
           }}
         >
           <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}
-              initialRouteName="Loading"
-            >
-              <Stack.Screen name="Loading" component={LoadingScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-              <Stack.Screen name="Home" component={BottomNav} />
-            </Stack.Navigator>
-            {/* <BottomNav></BottomNav> */}
+            <BottomNav></BottomNav>
           </NavigationContainer>
         </SafeAreaView>
       </>

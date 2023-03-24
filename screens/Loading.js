@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 export default class LoadingScreen extends React.Component {
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? "Index" : "Login");
+    firebase.auth().onAuthStateChanged((user) => {
+      this.props.navigation.navigate(user ? "Home" : "Login");
     });
   }
   render() {
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });

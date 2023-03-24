@@ -7,28 +7,29 @@ import ProfileScreen from "../screens/Profile";
 import IndexScreen from "../screens/Index";
 import GamifyScreen from "../screens/Gamify";
 import SupportScreen from "../screens/Support";
+import LoadingScreen from "../screens/Loading";
 
 //for navigation
 const Tab = createBottomTabNavigator();
 
 //Entry Point
-class BottomNav extends React.Component {
-  render() {
-    return (
-      // <Stack.Navigator
-      //   screenOptions={{
-      //     headerShown: false,
-      //   }}
-      //   initialRouteName="Loading"
-      // >
-      //   <Stack.Screen name="Index" component={IndexScreen} />
-      //   <Stack.Screen name="Profile" component={ProfileScreen} />
-      //   <Stack.Screen name="Login" component={LoginScreen} />
-      //   <Stack.Screen name="Register" component={RegisterScreen} />
-      //   <Stack.Screen name="Loading" component={LoadingScreen} />
-      //   <Stack.Screen name="Gamify" component={GamifyScreen} />
-      //   <Stack.Screen name="Support" component={SupportScreen} />
-      // </Stack.Navigator>
+const BottomNav = () => {
+  return (
+    // <Stack.Navigator>
+    //   screenOptions={{
+    //     headerShown: false,
+    //   }}
+    //   initialRouteName="Loading"
+    // >
+    //   <Stack.Screen name="Index" component={IndexScreen} />
+    //   <Stack.Screen name="Profile" component={ProfileScreen} />
+    //   <Stack.Screen name="Login" component={LoginScreen} />
+    //   <Stack.Screen name="Register" component={RegisterScreen} />
+    //   <Stack.Screen name="Loading" component={LoadingScreen} />
+    //   <Stack.Screen name="Gamify" component={GamifyScreen} />
+    //   <Stack.Screen name="Support" component={SupportScreen} />
+    // </Stack.Navigator>
+    <>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -60,7 +61,7 @@ class BottomNav extends React.Component {
                 }}
               >
                 <Image
-                  source={require("./assets/graph.png")}
+                  source={require("../assets/graph.png")}
                   resizeMode="contain"
                   style={{
                     width: 25,
@@ -93,7 +94,7 @@ class BottomNav extends React.Component {
                 }}
               >
                 <Image
-                  source={require("./assets/gamify.png")}
+                  source={require("../assets/gamify.png")}
                   resizeMode="contain"
                   style={{
                     width: 25,
@@ -126,7 +127,7 @@ class BottomNav extends React.Component {
                 }}
               >
                 <Image
-                  source={require("./assets/support.png")}
+                  source={require("../assets/support.png")}
                   resizeMode="contain"
                   style={{
                     width: 25,
@@ -159,7 +160,7 @@ class BottomNav extends React.Component {
                 }}
               >
                 <Image
-                  source={require("./assets/profile.png")}
+                  source={require("../assets/profile.png")}
                   resizeMode="contain"
                   style={{
                     width: 25,
@@ -180,9 +181,9 @@ class BottomNav extends React.Component {
           }}
         />
       </Tab.Navigator>
-    );
-  }
-}
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   shadow: {

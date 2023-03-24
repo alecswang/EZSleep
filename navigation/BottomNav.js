@@ -82,8 +82,8 @@ const BottomNav = () => {
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name="Gamify"
+          component={GamifyScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -115,8 +115,8 @@ const BottomNav = () => {
           }}
         />
         <Tab.Screen
-          name="Gamify"
-          component={GamifyScreen}
+          name="Support"
+          component={SupportScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -148,8 +148,8 @@ const BottomNav = () => {
           }}
         />
         <Tab.Screen
-          name="Support"
-          component={SupportScreen}
+          name="Profile"
+          component={ProfileScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View

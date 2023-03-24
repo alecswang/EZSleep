@@ -1,10 +1,17 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import React from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+} from "react-native";
 
-import firebase from 'firebase/compat/app';
-import {firestore, auth} from './firebase'
+import firebase from "firebase/compat/app";
+import { firestore, auth } from "./firebase";
 import { AsyncStorage } from "react-native";
-
 
 //Profile Page
 class RegisterScreen extends React.Component {
@@ -14,13 +21,13 @@ class RegisterScreen extends React.Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate("Index"))
-      .catch(error => this.setState({ errorMessage: error.message }));
-  }
-    
-  render(){
+      .then(() => this.props.navigation.navigate("Home"))
+      .catch((error) => this.setState({ errorMessage: error.message }));
+  };
+
+  render() {
     return (
-    <View style={styles.layout}>
+      <View style={styles.layout}>
         <Text style={styles.title}>Register</Text>
         {this.state.errorMessage && (
           <Text style={{ color: "red" }}>{this.state.errorMessage}</Text>
@@ -32,71 +39,68 @@ class RegisterScreen extends React.Component {
           onChangeText={(username) => this.setState({ username })}
         /> */}
         <TextInput
-          placeholder={'Email'}
+          placeholder={"Email"}
           autoCapitalize="none"
           style={styles.input}
-          onChangeText={email => this.setState({ email })}
+          onChangeText={(email) => this.setState({ email })}
           value={this.state.email}
         />
         <TextInput
-          placeholder={'Password'}
+          placeholder={"Password"}
           secureTextEntry={true}
           style={styles.input}
           value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
         />
-        <Pressable
-          style={styles.button}
-          onPress={this.handleSignup}
-        >
+        <Pressable style={styles.button} onPress={this.handleSignup}>
           <Text style={styles.text}>Register</Text>
         </Pressable>
 
-      {/* Nav to Index Page */}
-      <Pressable 
-        onPress={()=>this.props.navigation.navigate('Login')}
-        style={styles.backButton}
-      >
-        <Image
-          style={styles.backImage}
-          source={require('../assets/back-arrow.png')}
-        ></Image>
-      </Pressable>
-    </View>
-    )
+        {/* Nav to Index Page */}
+        <Pressable
+          onPress={() => this.props.navigation.navigate("Login")}
+          style={styles.backButton}
+        >
+          <Image
+            style={styles.backImage}
+            source={require("../assets/back-arrow.png")}
+          ></Image>
+        </Pressable>
+      </View>
+    );
   }
-};
+}
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-    //general Layout
-    layout: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "#654CE0",
-    },
-    //Testing purpose
-    title: {
-        fontSize: 32,
-        marginBottom: 16,
-        position: "absolute",
-        top: 70,
-        justifyContent: "center",
-        color: '#fff',
-    },
-    //Back Button
-    backButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        position: 'absolute',
-        top: 70,
-        left: 20,
-        backgroundColor: 'gold',
-    },
-    //Images
+  //general Layout
+  layout: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#654CE0",
+  },
+  //Testing purpose
+  title: {
+    fontSize: 32,
+    marginBottom: 16,
+    position: "absolute",
+    top: 70,
+    justifyContent: "center",
+    color: "#fff",
+  },
+  //Back Button
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    position: "absolute",
+    top: 70,
+    left: 20,
+    backgroundColor: "gold",
+  },
+  //Images
   backImage: {
     width: 40,
     height: 40,
@@ -108,28 +112,28 @@ const styles = StyleSheet.create({
     height: 44,
     padding: 10,
     borderWidth: 3,
-    borderColor: 'grey',
+    borderColor: "grey",
     marginBottom: 30,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   text: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.25,
-    color: 'white',
+    color: "white",
   },
   button: {
     width: 100,
     height: 44,
     padding: 5,
     borderWidth: 3,
-    borderColor: 'grey',
+    borderColor: "grey",
     marginBottom: 20,
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
     elevation: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 20,
   },
 });

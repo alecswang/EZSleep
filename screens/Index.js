@@ -79,7 +79,7 @@ class IndexScreen extends React.Component {
           barColor="#FEE45A"
         />
 
-        <BottomNav nav={this.props} />
+        {/* <BottomNav nav={this.props} /> */}
       </View>
     );
   }

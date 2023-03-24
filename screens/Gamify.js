@@ -10,7 +10,7 @@ const ProfileScreen = () => {
     const nav = useNavigation();
     return (
     <View style={styles.layout}>
-      <Text style={styles.title}>Profile</Text>
+      <Text style={styles.title}>Gamify</Text>
       {/* Nav to Index Page */}
       <Pressable 
         onPress={()=>nav.navigate('Index')}
@@ -18,7 +18,7 @@ const ProfileScreen = () => {
       >
         <Image
           style={styles.backImage}
-          source={require('./assets/back-arrow.png')}
+          source={require('../assets/back-arrow.png')}
         ></Image>
       </Pressable>
     </View>

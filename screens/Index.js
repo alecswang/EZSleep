@@ -11,6 +11,7 @@ import {
 import Header from "../components/Header";
 import BottomNav from "../components/BottomNav";
 import Graph from "../components/Graph";
+import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
 
 import firebase from "firebase/compat/app";
 import { firestore, auth } from "./firebase";
@@ -79,6 +80,22 @@ class IndexScreen extends React.Component {
           barColor="#FEE45A"
         />
 
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <ChangeTimeFramePopup
+            title={"Sleep Goal"}
+            style={styles.goalButton}
+          ></ChangeTimeFramePopup>
+
+          <ChangeTimeFramePopup
+            title={"Sleep Time"}
+            style={styles.timeButton}
+          ></ChangeTimeFramePopup>
+        </View>
+
         {/* <BottomNav nav={this.props} /> */}
       </View>
     );
@@ -133,4 +150,8 @@ const styles = StyleSheet.create({
   darkThemeText: {
     color: "#d0d0c0",
   },
+  // goalButton: {
+  //   margin: 5,
+  // },
+  // timeButton: {},
 });

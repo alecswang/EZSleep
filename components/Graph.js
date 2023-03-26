@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native";
 import ChangeTimeFramePopup from "./ChangeTimeFramePopup";
+
+import { auth, database } from "../screens/firebase";
+import { update, ref, onValue } from "firebase/database";
+let uID;
+if (auth.currentUser) {
+  uID = auth.currentUser.uid;
+}
+
+let startTime = ref(database, [uID] + "/startTime");
+onValue(startTime, (snapshot) => {
+  startTime = snapshot.val();
+});
+console.log(uID);
+console.log(startTime);
+
+let endTime = ref(database, [uID] + "/endTime");
+onValue(endTime, (snapshot) => {
+  endTime = snapshot.val();
+});
+
+// useEffect(() => {
+//   window.addEventListener("keydown", handleUserKeyPress);
+
+//   return () => {
+//     window.removeEventListener("keydown", handleUserKeyPress);
+//   };
+// });
 
 class Graph extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  updateTime() {
+    startTime = ref(database, [uID] + "/startTime");
+    onValue(startTime, (snapshot) => {
+      startTime = snapshot.val();
+    });
+    console.log(uID);
+    console.log(startTime);
+
+    endTime = ref(database, [uID] + "/endTime");
+    onValue(endTime, (snapshot) => {
+      endTime = snapshot.val();
+    });
   }
 
   date = new Date().getDate();
@@ -44,22 +85,27 @@ class Graph extends React.Component {
   }
 
   displayTime = function (time) {
+    console.log("time" + time)
     this.setTime(time);
     return {
       width: 6,
       height: 40,
-      backgroundColor: this.props.barColor,
+      backgroundColor: "#ffffff",
       position: "absolute",
       bottom: 10,
       left: this.time,
     };
   };
   render() {
+    console.log("real render");
+    this.updateTime();
+    console.log("displayt" + this.displayTime(startTime))
+    console.log(this.displayTime(startTime))
     return (
       <View style={[styles.container]}>
         {/* Top part */}
         <View style={styles.topGraph}>
-          <Text style={styles.title}>{this.props.title}</Text>
+          <Text style={styles.title}>{"Sleep"}</Text>
           {/* <Pressable
             onPress={() => this.props.nav.navigation.navigate("Profile")}
             style={styles.changeTimeFrameButton}
@@ -68,19 +114,18 @@ class Graph extends React.Component {
               {"Change " + this.props.title}
             </Text>
           </Pressable> */}
-          <ChangeTimeFramePopup title={this.props.title} style={styles.changeTimeFrameButton}></ChangeTimeFramePopup>
         </View>
         {/* Main part */}
         <View style={styles.mainGraph}>
-          <View style={this.displayTime(this.props.goalStart)} />
-          <View style={this.displayTime(this.props.goalEnd)} />
+          <View style={this.displayTime(startTime)} />
+          <View style={this.displayTime(endTime)} />
           {/* Current time */}
-          <View style={[this.displayTime(), {backgroundColor:"white", width: 3}]} />
+          <View
+            style={[this.displayTime(), { backgroundColor: "white", width: 3 }]}
+          />
         </View>
         {/* Bottom time */}
-        <View
-          style={[styles.bottomBar, { backgroundColor: this.props.barColor }]}
-        />
+        <View style={[styles.bottomBar, { backgroundColor: "#ffffff" }]} />
         <View style={styles.bottomGraph}>
           <Image
             style={styles.hoursImg}
@@ -102,6 +147,10 @@ class Graph extends React.Component {
       </View>
     );
   }
+}
+
+export function renderr() {
+  // this.render();
 }
 
 export default Graph;
@@ -127,17 +176,8 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontSize: 16,
-  },
-  changeTimeFrameButton: {
-    width: 120,
-    height: 25,
-    position: "absolute",
-    top: 13,
-    right: 18,
-    backgroundColor: "lightgrey",
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    fontWeight: "bold",
+    // fontFamily: "serif",
   },
   changeTimeFrameText: {
     fontSize: 10,

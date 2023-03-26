@@ -26,7 +26,10 @@ import Animated, {
 // } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 import { auth, database } from "./firebase";
 import { update, ref } from "firebase/database";
-let uID = auth.currentUser.uid;
+let uID;
+if (auth.currentUser) {
+  uID = auth.currentUser.uid;
+}
 
 //update firebase
 const updates = {};
@@ -43,6 +46,7 @@ const SettingScreen = () => {
     const updates = {};
     updates[[uID] + "/theme"] = darkEnabled ? "dark" : "light";
     update(ref(database), updates);
+    //need to render here
   };
 
   // Back arrow button

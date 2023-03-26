@@ -4,7 +4,10 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { auth, database } from "./firebase";
-let uID = auth.currentUser.uid;
+let uID;
+if (auth.currentUser) {
+  uID = auth.currentUser.uid;
+}
 import { update, ref, onValue } from "firebase/database";
 
 import { themes } from "../utilities/themes";

@@ -77,8 +77,8 @@ class ChangeTimeFramePopup extends React.Component {
 
   
   renderGraph() {
-    const graph = new Graph();
-    graph.render();
+    // const graph = new Graph();
+    Graph.updateTime;
     console.log("render")
   }
 
@@ -254,6 +254,7 @@ class ChangeTimeFramePopup extends React.Component {
                   updates[[uID] + "/endTime"] = this.convertToMilitary(endTime);
                   update(ref(database), updates);
                   this.renderGraph();
+                  // props.onPress 
                   this.setState({ modalVisible: !modalVisible });
                 }}
               >

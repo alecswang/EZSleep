@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Modal, Button } from "react-native";
 import ChangeTimeFramePopup from "./ChangeTimeFramePopup";
 
 import { auth, database } from "../screens/firebase";
@@ -9,16 +9,16 @@ if (auth.currentUser) {
   uID = auth.currentUser.uid;
 }
 
-let startTime = ref(database, [uID] + "/startTime");
-onValue(startTime, (snapshot) => {
-  startTime = snapshot.val();
+let st = ref(database, [uID] + "/startTime");
+onValue(st, (snapshot) => {
+  st = snapshot.val();
 });
 console.log(uID);
-console.log(startTime);
+console.log(st);
 
-let endTime = ref(database, [uID] + "/endTime");
-onValue(endTime, (snapshot) => {
-  endTime = snapshot.val();
+let et = ref(database, [uID] + "/endTime");
+onValue(et, (snapshot) => {
+  et = snapshot.val();
 });
 
 // useEffect(() => {
@@ -32,20 +32,30 @@ onValue(endTime, (snapshot) => {
 class Graph extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      startTime: st,
+      endTime: et,
+    };
   }
 
-  updateTime() {
-    startTime = ref(database, [uID] + "/startTime");
-    onValue(startTime, (snapshot) => {
-      startTime = snapshot.val();
+  
+  updateTime = () => {
+    st = ref(database, [uID] + "/startTime");
+    onValue(st, (snapshot) => {
+      st = snapshot.val();
     });
     console.log(uID);
-    console.log(startTime);
+    console.log(st);
 
-    endTime = ref(database, [uID] + "/endTime");
-    onValue(endTime, (snapshot) => {
-      endTime = snapshot.val();
+    et = ref(database, [uID] + "/endTime");
+    onValue(et, (snapshot) => {
+      et = snapshot.val();
     });
+  
+    //update state
+    this.setState({startTime: st})
+    this.setState({staendTimertTime: et})
+
   }
 
   date = new Date().getDate();
@@ -97,8 +107,9 @@ class Graph extends React.Component {
     };
   };
   render() {
+    const { startTime, endTime } = this.state;
     console.log("real render");
-    this.updateTime();
+    this.updateTime;
     console.log("displayt" + this.displayTime(startTime))
     console.log(this.displayTime(startTime))
     return (
@@ -143,15 +154,20 @@ class Graph extends React.Component {
             style={styles.hoursImg}
             source={require("../assets/sun.png")}
           ></Image>
+          <Button onPress={this.updateTime} title="Update Times" />
         </View>
       </View>
     );
   }
 }
 
-export function renderr() {
-  // this.render();
-}
+// Graph.ut = function(){
+//   updateTime;
+// }
+
+// module.exports = {
+//   functions: Graph
+// };
 
 export default Graph;
 

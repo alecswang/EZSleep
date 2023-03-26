@@ -66,12 +66,12 @@ const BottomNav = () => {
                   style={{
                     width: 25,
                     height: 25,
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                   }}
                 />
                 <Text
                   style={{
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                     fontSize: 12,
                   }}
                 >
@@ -99,12 +99,12 @@ const BottomNav = () => {
                   style={{
                     width: 25,
                     height: 25,
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                   }}
                 />
                 <Text
                   style={{
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                     fontSize: 12,
                   }}
                 >
@@ -132,12 +132,12 @@ const BottomNav = () => {
                   style={{
                     width: 25,
                     height: 25,
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                   }}
                 />
                 <Text
                   style={{
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                     fontSize: 12,
                   }}
                 >
@@ -165,12 +165,12 @@ const BottomNav = () => {
                   style={{
                     width: 25,
                     height: 25,
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                   }}
                 />
                 <Text
                   style={{
-                    tintColor: focused ? "#e32f45" : "#748c94",
+                    tintColor: focused ? "#6A4CE5" : "#748c94",
                     fontSize: 12,
                   }}
                 >

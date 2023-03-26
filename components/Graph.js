@@ -33,30 +33,30 @@ class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: st,
-      endTime: et,
+      startTime: this.props.startTime,
+      endTime: this.props.endTime,
     };
   }
 
   
-  updateTime = () => {
-    st = ref(database, [uID] + "/startTime");
-    onValue(st, (snapshot) => {
-      st = snapshot.val();
-    });
-    console.log(uID);
-    console.log(st);
+  // updateTime = () => {
+  //   st = ref(database, [uID] + "/startTime");
+  //   onValue(st, (snapshot) => {
+  //     st = snapshot.val();
+  //   });
+  //   console.log(uID);
+  //   console.log(st);
 
-    et = ref(database, [uID] + "/endTime");
-    onValue(et, (snapshot) => {
-      et = snapshot.val();
-    });
+  //   et = ref(database, [uID] + "/endTime");
+  //   onValue(et, (snapshot) => {
+  //     et = snapshot.val();
+  //   });
   
-    //update state
-    this.setState({startTime: st})
-    this.setState({staendTimertTime: et})
+  //   //update state
+  //   this.setState({startTime: st})
+  //   this.setState({staendTimertTime: et})
 
-  }
+  // }
 
   date = new Date().getDate();
   month = new Date().getMonth() + 1; //To get the Current Month
@@ -109,7 +109,7 @@ class Graph extends React.Component {
   render() {
     const { startTime, endTime } = this.state;
     console.log("real render");
-    this.updateTime;
+    // this.updateTime;
     console.log("displayt" + this.displayTime(startTime))
     console.log(this.displayTime(startTime))
     return (
@@ -128,8 +128,8 @@ class Graph extends React.Component {
         </View>
         {/* Main part */}
         <View style={styles.mainGraph}>
-          <View style={this.displayTime(startTime)} />
-          <View style={this.displayTime(endTime)} />
+          <View style={this.displayTime(this.props.startTime)} />
+          <View style={this.displayTime(this.props.endTime)} />
           {/* Current time */}
           <View
             style={[this.displayTime(), { backgroundColor: "white", width: 3 }]}
@@ -154,7 +154,7 @@ class Graph extends React.Component {
             style={styles.hoursImg}
             source={require("../assets/sun.png")}
           ></Image>
-          <Button onPress={this.updateTime} title="Update Times" />
+          {/* <Button onPress={this.updateTime} title="Update Times" /> */}
         </View>
       </View>
     );

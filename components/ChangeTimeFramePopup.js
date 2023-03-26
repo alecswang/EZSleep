@@ -253,7 +253,9 @@ class ChangeTimeFramePopup extends React.Component {
                     this.convertToMilitary(startTime);
                   updates[[uID] + "/endTime"] = this.convertToMilitary(endTime);
                   update(ref(database), updates);
-                  this.renderGraph();
+                  // this.renderGraph();
+                  // console.log(this.props.updateTime);
+                  this.props.updateTime();
                   // props.onPress 
                   this.setState({ modalVisible: !modalVisible });
                 }}

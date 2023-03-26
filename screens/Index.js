@@ -14,9 +14,27 @@ import Graph from "../components/Graph";
 import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
 
 import firebase from "firebase/compat/app";
-import { firestore, auth } from "./firebase";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+
+import { auth, database } from "../screens/firebase";
+import { update, ref, onValue } from "firebase/database";
+let uID;
+if (auth.currentUser) {
+  uID = auth.currentUser.uid;
+}
+
+let st = ref(database, [uID] + "/startTime");
+onValue(st, (snapshot) => {
+  st = snapshot.val();
+});
+console.log(uID);
+console.log(st);
+
+let et = ref(database, [uID] + "/endTime");
+onValue(et, (snapshot) => {
+  et = snapshot.val();
+});
 
 //Index/Main Page
 class IndexScreen extends React.Component {
@@ -29,13 +47,38 @@ class IndexScreen extends React.Component {
     super(props);
     //To get the Current Date
     // var date = new Date().getDate();
+    this.state = {
+      startTime: st,
+      endTime: et,
+    };
   }
 
   // currentTimeDisplay = () => {
   //   styles.currentTime.left = 100;
   // }
 
+  updateTime = () => {
+    st = ref(database, [uID] + "/startTime");
+    onValue(st, (snapshot) => {
+      st = snapshot.val();
+    });
+    console.log(uID);
+    console.log(st);
+
+    et = ref(database, [uID] + "/endTime");
+    onValue(et, (snapshot) => {
+      et = snapshot.val();
+    });
+  
+    //update state
+    this.setState({startTime: st})
+    this.setState({staendTimertTime: et})
+    console.log("UPDATEtiansdajfnaojfgbas")
+  }
+
   render() {
+    const { startTime, endTime } = this.state;
+    console.log("FASFSAFAFWWF" + startTime)
     return (
       <View style={styles.layout}>
         <Header></Header>
@@ -72,12 +115,16 @@ class IndexScreen extends React.Component {
           goalStart="21"
           goalEnd="6"
           barColor="#3FDCFF"
+          startTime = {startTime}
+          endTime = {endTime}
         />
         <Graph
           title="Actual Sleep"
           goalStart="24"
           goalEnd="9"
           barColor="#FEE45A"
+          startTime = {startTime}
+          endTime = {endTime}
         />
 
         <View
@@ -88,6 +135,9 @@ class IndexScreen extends React.Component {
           <ChangeTimeFramePopup
             title={"Sleep Goal"}
             style={styles.goalButton}
+            startTime = {startTime}
+            endTime = {endTime}
+            updateTime={this.updateTime} 
           ></ChangeTimeFramePopup>
 
           <ChangeTimeFramePopup

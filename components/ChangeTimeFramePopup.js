@@ -9,38 +9,19 @@ import {
   Image,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
-import Graph from "./Graph";
 
 import { auth, database } from "../screens/firebase";
 import { update, ref, onValue } from "firebase/database";
-let uID;
-if (auth.currentUser) {
-  uID = auth.currentUser.uid;
-}
-let st = ref(database, [uID] + "/startTime");
-onValue(st, (snapshot) => {
-  st = snapshot.val();
-});
-console.log(uID);
-console.log("st: " + st);
-
-let et = ref(database, [uID] + "/endTime");
-onValue(et, (snapshot) => {
-  et = snapshot.val();
-});
 
 class ChangeTimeFramePopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
-      startTime: this.convertToRegular(st),
-      endTime: this.convertToRegular(et),
+      startTime: this.props.startTime,
+      endTime: this.props.endTime,
     };
   }
-  state = {
-    modalVisible: false,
-  };
 
   convertToRegular(time) {
     let res = time;
@@ -48,6 +29,7 @@ class ChangeTimeFramePopup extends React.Component {
       res -= 12;
     }
     res = "" + res.toString().split(".")[0];
+    // if (res == "0") {res = "12"; }
     if (time.toString().split(".")[1]) {
       res += ":" + parseInt(time.toString().split(".")[1]) / 100 * 60;
     } else {
@@ -55,33 +37,29 @@ class ChangeTimeFramePopup extends React.Component {
     }
     if(parseInt(time.toString().split(".")[1]) == 5){res += 0;}
     res += time > 12 ? "pm" : "am";
-    console.log(res);
     return res;
   }
 
   convertToMilitary(time) {
     let hour;
-    if (time.length == 7) {
-      hour = time.slice(0, 2) / 1 + time.slice(3, 5) / 60;
-      if (time.slice(5) == "pm") {
-        hour += 12;
-      }
-    } else {
-      hour = time.slice(0, 1) / 1 + time.slice(2, 4) / 60;
-      if (time.slice(4) == "pm") {
-        hour += 12;
-      }
+    hour = time.toString().split(":")[0] / 1 + time.toString().split(":")[1].slice(0, 2) / 60;
+    if (time.toString().split(":")[1].slice(2) == "pm") {
+      hour += 12;
     }
+    // if (time.length == 7) {
+    //   hour = time.slice(0, 2) / 1 + time.slice(3, 5) / 60;
+    //   if (time.slice(5) == "pm") {
+    //     hour += 12;
+    //   }
+    // } else {
+    //   hour = time.slice(0, 1) / 1 + time.slice(2, 4) / 60;
+    //   if (time.slice(4) == "pm") {
+    //     hour += 12;
+    //   }
+    // }
     return hour;
   }
-
   
-  renderGraph() {
-    // const graph = new Graph();
-    Graph.updateTime;
-    console.log("render")
-  }
-
   render() {
     const { modalVisible, startTime, endTime } = this.state;
     const timeFrames = [
@@ -200,7 +178,8 @@ class ChangeTimeFramePopup extends React.Component {
                 data={timeFrames}
                 onSelect={(selectedItem, index) => {
                   console.log(selectedItem, index);
-                  this.setState({ startTime: selectedItem });
+                  this.setState({ startTime: this.convertToMilitary(selectedItem) });
+                  // this.props.onTimeChange(this.convertToMilitary(selectedItem), this.props.endTime);
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
                   // text represented after item is selected
@@ -212,14 +191,15 @@ class ChangeTimeFramePopup extends React.Component {
                   // if data array is an array of objects then return item.property to represent item in dropdown
                   return item;
                 }}
-                defaultValue={startTime}
+                defaultValue={this.convertToRegular(startTime)}
                 buttonStyle={styles.leftDropDown}
               />
               <SelectDropdown
                 data={timeFrames}
                 onSelect={(selectedItem, index) => {
                   console.log(selectedItem, index);
-                  this.setState({ endTime: selectedItem });
+                  // this.props.onTimeChange(this.props.startTime, this.convertToMilitary(selectedItem));
+                  this.setState({ endTime: this.convertToMilitary(selectedItem) });
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
                   // text represented after item is selected
@@ -231,7 +211,7 @@ class ChangeTimeFramePopup extends React.Component {
                   // if data array is an array of objects then return item.property to represent item in dropdown
                   return item;
                 }}
-                defaultValue={endTime}
+                defaultValue={this.convertToRegular(endTime)}
                 buttonStyle={styles.rightDropDown}
               />
               {/* close popup button */}
@@ -249,14 +229,11 @@ class ChangeTimeFramePopup extends React.Component {
                 style={[styles.button, styles.confirmButton]}
                 onPress={() => {
                   const updates = {};
-                  updates[[uID] + "/startTime"] =
-                    this.convertToMilitary(startTime);
-                  updates[[uID] + "/endTime"] = this.convertToMilitary(endTime);
+                  updates[[this.props.uID] + "/startTime"] =
+                   startTime;
+                  updates[[this.props.uID] + "/endTime"] = endTime;
                   update(ref(database), updates);
-                  // this.renderGraph();
-                  // console.log(this.props.updateTime);
                   this.props.updateTime();
-                  // props.onPress 
                   this.setState({ modalVisible: !modalVisible });
                 }}
               >

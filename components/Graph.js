@@ -1,33 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable, Modal, Button } from "react-native";
-import ChangeTimeFramePopup from "./ChangeTimeFramePopup";
-
-import { auth, database } from "../screens/firebase";
-import { update, ref, onValue } from "firebase/database";
-let uID;
-if (auth.currentUser) {
-  uID = auth.currentUser.uid;
-}
-
-let st = ref(database, [uID] + "/startTime");
-onValue(st, (snapshot) => {
-  st = snapshot.val();
-});
-console.log(uID);
-console.log(st);
-
-let et = ref(database, [uID] + "/endTime");
-onValue(et, (snapshot) => {
-  et = snapshot.val();
-});
-
-// useEffect(() => {
-//   window.addEventListener("keydown", handleUserKeyPress);
-
-//   return () => {
-//     window.removeEventListener("keydown", handleUserKeyPress);
-//   };
-// });
+import React from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 class Graph extends React.Component {
   constructor(props) {
@@ -37,26 +9,6 @@ class Graph extends React.Component {
       endTime: this.props.endTime,
     };
   }
-
-  
-  // updateTime = () => {
-  //   st = ref(database, [uID] + "/startTime");
-  //   onValue(st, (snapshot) => {
-  //     st = snapshot.val();
-  //   });
-  //   console.log(uID);
-  //   console.log(st);
-
-  //   et = ref(database, [uID] + "/endTime");
-  //   onValue(et, (snapshot) => {
-  //     et = snapshot.val();
-  //   });
-  
-  //   //update state
-  //   this.setState({startTime: st})
-  //   this.setState({staendTimertTime: et})
-
-  // }
 
   date = new Date().getDate();
   month = new Date().getMonth() + 1; //To get the Current Month
@@ -95,12 +47,11 @@ class Graph extends React.Component {
   }
 
   displayTime = function (time) {
-    console.log("time" + time)
     this.setTime(time);
     return {
       width: 6,
       height: 40,
-      backgroundColor: "#ffffff",
+      backgroundColor: this.props.barColor,
       position: "absolute",
       bottom: 10,
       left: this.time,
@@ -108,23 +59,11 @@ class Graph extends React.Component {
   };
   render() {
     const { startTime, endTime } = this.state;
-    console.log("real render");
-    // this.updateTime;
-    console.log("displayt" + this.displayTime(startTime))
-    console.log(this.displayTime(startTime))
     return (
       <View style={[styles.container]}>
         {/* Top part */}
         <View style={styles.topGraph}>
-          <Text style={styles.title}>{"Sleep"}</Text>
-          {/* <Pressable
-            onPress={() => this.props.nav.navigation.navigate("Profile")}
-            style={styles.changeTimeFrameButton}
-          >
-            <Text style={styles.changeTimeFrameText}>
-              {"Change " + this.props.title}
-            </Text>
-          </Pressable> */}
+          <Text style={styles.title}>{this.props.title}</Text>
         </View>
         {/* Main part */}
         <View style={styles.mainGraph}>
@@ -136,7 +75,7 @@ class Graph extends React.Component {
           />
         </View>
         {/* Bottom time */}
-        <View style={[styles.bottomBar, { backgroundColor: "#ffffff" }]} />
+        <View style={[styles.bottomBar, { backgroundColor: this.props.barColor }]} />
         <View style={styles.bottomGraph}>
           <Image
             style={styles.hoursImg}
@@ -154,20 +93,11 @@ class Graph extends React.Component {
             style={styles.hoursImg}
             source={require("../assets/sun.png")}
           ></Image>
-          {/* <Button onPress={this.updateTime} title="Update Times" /> */}
         </View>
       </View>
     );
   }
 }
-
-// Graph.ut = function(){
-//   updateTime;
-// }
-
-// module.exports = {
-//   functions: Graph
-// };
 
 export default Graph;
 

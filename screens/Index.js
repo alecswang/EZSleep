@@ -9,7 +9,6 @@ import {
   Fragment,
 } from "react-native";
 import Header from "../components/Header";
-import BottomNav from "../components/BottomNav";
 import Graph from "../components/Graph";
 import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
 
@@ -19,19 +18,17 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 import { auth, database } from "../screens/firebase";
 import { update, ref, onValue } from "firebase/database";
-let uID;
+let userID;
 if (auth.currentUser) {
-  uID = auth.currentUser.uid;
+  userID = auth.currentUser.uid;
 }
 
-let st = ref(database, [uID] + "/startTime");
+let st = ref(database, userID + "/startTime");
 onValue(st, (snapshot) => {
   st = snapshot.val();
 });
-console.log(uID);
-console.log(st);
 
-let et = ref(database, [uID] + "/endTime");
+let et = ref(database, userID + "/endTime");
 onValue(et, (snapshot) => {
   et = snapshot.val();
 });
@@ -50,6 +47,7 @@ class IndexScreen extends React.Component {
     this.state = {
       startTime: st,
       endTime: et,
+      uID:userID,
     };
   }
 
@@ -58,27 +56,28 @@ class IndexScreen extends React.Component {
   // }
 
   updateTime = () => {
-    st = ref(database, [uID] + "/startTime");
+    st = ref(database, [this.state.uID] + "/startTime");
     onValue(st, (snapshot) => {
       st = snapshot.val();
     });
-    console.log(uID);
-    console.log(st);
 
-    et = ref(database, [uID] + "/endTime");
+    et = ref(database, [this.state.uID] + "/endTime");
     onValue(et, (snapshot) => {
       et = snapshot.val();
     });
-  
+
     //update state
-    this.setState({startTime: st})
-    this.setState({staendTimertTime: et})
-    console.log("UPDATEtiansdajfnaojfgbas")
-  }
+    this.setState({ startTime: st });
+    this.setState({ endTime: et });
+  };
+
+  // handleTimeChange = (newST, newET) => {
+  //   this.setState({ startTime: newST });
+  //   this.setState({ endTime: newET });
+  // }
 
   render() {
-    const { startTime, endTime } = this.state;
-    console.log("FASFSAFAFWWF" + startTime)
+    const { startTime, endTime, uID } = this.state;
     return (
       <View style={styles.layout}>
         <Header></Header>
@@ -115,16 +114,16 @@ class IndexScreen extends React.Component {
           goalStart="21"
           goalEnd="6"
           barColor="#3FDCFF"
-          startTime = {startTime}
-          endTime = {endTime}
+          startTime={startTime}
+          endTime={endTime}
         />
         <Graph
           title="Actual Sleep"
           goalStart="24"
           goalEnd="9"
           barColor="#FEE45A"
-          startTime = {startTime}
-          endTime = {endTime}
+          startTime={startTime}
+          endTime={endTime}
         />
 
         <View
@@ -135,14 +134,21 @@ class IndexScreen extends React.Component {
           <ChangeTimeFramePopup
             title={"Sleep Goal"}
             style={styles.goalButton}
-            startTime = {startTime}
-            endTime = {endTime}
-            updateTime={this.updateTime} 
+            startTime={startTime}
+            endTime={endTime}
+            updateTime={this.updateTime}
+            uID={uID}
+            // onTimeChange={this.handleTimeChange}
           ></ChangeTimeFramePopup>
 
           <ChangeTimeFramePopup
             title={"Sleep Time"}
             style={styles.timeButton}
+            startTime={startTime}
+            endTime={endTime}
+            updateTime={this.updateTime}
+            uID={uID}
+            // onTimeChange={this.handleTimeChange}
           ></ChangeTimeFramePopup>
         </View>
 

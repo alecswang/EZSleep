@@ -140,6 +140,28 @@ const ProfileScreen = (props) => {
             borderWidth: 1,
           }}
         />
+        {/* Melatonin toggle container */}
+        <View style={styles.container}>
+          <Animated.Text style={[styles.optionText, textAnimation]}>
+          Melatonin
+          </Animated.Text>
+          <Switch
+            value={lightEnabled}
+            onValueChange={toggleSwitch}
+            trackColor={SWITCH_TRACK_COLOR}
+            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+            ios_backgroundColor="#3e3e3e"
+            style={styles.switch}
+          />
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
+        />
         {/* Caffine toggle container */}
         <View style={styles.container}>
           <Animated.Text style={[styles.optionText, textAnimation]}>

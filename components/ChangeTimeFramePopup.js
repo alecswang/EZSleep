@@ -231,10 +231,12 @@ class ChangeTimeFramePopup extends React.Component {
               <Pressable
                 style={[styles.button, styles.confirmButton]}
                 onPress={() => {
+                  console.log("c: " + this.props)
+                  console.log(this.props)
                   const updates = {};
-                  updates[[this.props.uID] + "/startTime"] =
+                  updates[[this.props.uID] + "/" + this.props.reference + "StartTime"] =
                    startTime;
-                  updates[[this.props.uID] + "/endTime"] = endTime;
+                  updates[[this.props.uID] + "/" + this.props.reference + "EndTime"] = endTime;
                   update(ref(database), updates);
                   this.props.updateTime();
                   this.setState({ modalVisible: !modalVisible });

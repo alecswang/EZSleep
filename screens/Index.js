@@ -119,11 +119,11 @@ class IndexScreen extends React.Component {
     onValue(goalET, (snapshot) => {
       goalET = snapshot.val();
     });
-    let sleepST = ref(database, userID + "/sleepST");
+    let sleepST = ref(database, userID + "/sleepStartTime");
     onValue(sleepST, (snapshot) => {
       sleepST = snapshot.val();
     });
-    let sleepET = ref(database, userID + "/sleepET");
+    let sleepET = ref(database, userID + "/sleepEndTime");
     onValue(sleepET, (snapshot) => {
       sleepET = snapshot.val();
     });
@@ -133,6 +133,8 @@ class IndexScreen extends React.Component {
     this.setState({ goalEndTime: goalET });
     this.setState({ sleepStartTime: sleepST });
     this.setState({ sleepEndTime: sleepET });
+
+    console.log("dsfagw " + this.state.sleepStartTime)
   };
 
   // handleTimeChange = (newST, newET) => {
@@ -203,6 +205,7 @@ class IndexScreen extends React.Component {
             endTime={goalEndTime}
             updateTime={this.updateTime}
             uID={uID}
+            reference={"goal"}
             // onTimeChange={this.handleTimeChange}
           ></ChangeTimeFramePopup>
 
@@ -213,6 +216,7 @@ class IndexScreen extends React.Component {
             endTime={sleepEndTime}
             updateTime={this.updateTime}
             uID={uID}
+            reference={"sleep"}
             // onTimeChange={this.handleTimeChange}
           ></ChangeTimeFramePopup>
         </View>

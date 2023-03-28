@@ -4,10 +4,6 @@ import { View, Text, StyleSheet, Image } from "react-native";
 class Graph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      startTime: this.props.startTime,
-      endTime: this.props.endTime,
-    };
   }
 
   date = new Date().getDate();
@@ -58,7 +54,6 @@ class Graph extends React.Component {
     };
   };
   render() {
-    const { startTime, endTime } = this.state;
     return (
       <View style={[styles.container]}>
         {/* Top part */}

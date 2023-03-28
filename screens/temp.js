@@ -17,73 +17,38 @@ import firebase from "firebase/compat/app";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 import { auth, database } from "../screens/firebase";
-import { update, ref, onValue,get, child } from "firebase/database";
+import { update, ref, onValue, once } from "firebase/database";
 let userID;
 if (auth.currentUser) {
   userID = auth.currentUser.uid;
 }
 
-// let goalST, goalET, sleepST, sleepET;
-// waitValue();
-// function waitValue(){
-// get(ref(database, userID + "/goalStartTime")).then(async (snapshot) => {
-//   if (snapshot.exists()) {
-//     console.log("kai shi" + snapshot.val());
-//     goalST = await snapshot.val();
-//   } else {
-//     console.log("No data available");
-//     waitValue();
-//   }
-// }).catch((error) => {
-//   console.error("ni erro: " + error);
-// });
-// get(ref(database, userID + "/goalEndTime")).then((snapshot) => {
-//   if (snapshot.exists()) {
-//     console.log("kai shi" + snapshot.val());
-//     goalET = snapshot.val();
-//   } else {
-//     console.log("No data available");
-//   }
-// }).catch((error) => {
-//   console.error("ni erro: " + error);
-// });
-// get(ref(database, userID + "/sleepStartTime")).then((snapshot) => {
-//   if (snapshot.exists()) {
-//     console.log("kai shi" + snapshot.val());
-//     sleepST = snapshot.val();
-//   } else {
-//     console.log("No data available");
-//   }
-// }).catch((error) => {
-//   console.error("ni erro: " + error);
-// });
-// get(ref(database, userID + "/sleepEndTime")).then((snapshot) => {
-//   if (snapshot.exists()) {
-//     console.log("kai shi" + snapshot.val());
-//     sleepET = snapshot.val();
-//   } else {
-//     console.log("No data available");
-//   }
-// }).catch((error) => {
-//   console.error("ni erro: " + error);
-// });
-// }
+const goalSTRef = ref(database, userID + "/goalStartTime");
+const goalETRef = ref(database, userID + "/goalStartTime");
+const sleepSTRef = ref(database, userID + "/goalStartTime");
+const sleepETRef = ref(database, userID + "/goalStartTime");
 
-let goalST = ref(database, userID + "/goalStartTime");
-onValue(goalST, async (snapshot) => {
-  goalST = await snapshot.val();
+async function getGoalST(){
+  const snapshot = await once(goalSTRef);
+  const goalST = snapshot.val();
+  return goalST;
+}
+
+// let goalST = ref(database, userID + "/goalStartTime");
+onValue(goalSTRef, async (snapshot) => {
+  getGoalST();
 });
 let goalET = ref(database, userID + "/goalEndTime");
-onValue(goalET,  async (snapshot) => {
-  goalET = await snapshot.val();
+onValue(goalET, (snapshot) => {
+  goalET = snapshot.val();
 });
 let sleepST = ref(database, userID + "/sleepStartTime");
-onValue(sleepST, async (snapshot) => {
-  sleepST = await snapshot.val();
+onValue(sleepST, (snapshot) => {
+  sleepST = snapshot.val();
 });
 let sleepET = ref(database, userID + "/sleepEndTime");
-onValue(sleepET, async (snapshot) => {
-  sleepET = await snapshot.val();
+onValue(sleepET, (snapshot) => {
+  sleepET = snapshot.val();
 });
 
 //Index/Main Page
@@ -98,12 +63,14 @@ class IndexScreen extends React.Component {
     //To get the Current Date
     // var date = new Date().getDate();
     this.state = {
-      goalStartTime: goalST,
+      goalStartTime: getGoalST(),
       goalEndTime: goalET,
       sleepStartTime: sleepST,
       sleepEndTime: sleepET,
-      uID: userID,
+      uID:userID,
     };
+    console.log("拿" + getGoalST())
+    console.log(getGoalST())
   }
 
   // currentTimeDisplay = () => {
@@ -111,10 +78,10 @@ class IndexScreen extends React.Component {
   // }
 
   updateTime = () => {
-    let goalST = ref(database, userID + "/goalStartTime");
-    onValue(goalST, (snapshot) => {
-      goalST = snapshot.val();
-    });
+    // let goalST = ref(database, userID + "/goalStartTime");
+    // onValue(goalST, (snapshot) => {
+    //   goalST = snapshot.val();
+    // });
     let goalET = ref(database, userID + "/goalEndTime");
     onValue(goalET, (snapshot) => {
       goalET = snapshot.val();
@@ -129,7 +96,7 @@ class IndexScreen extends React.Component {
     });
 
     //update state
-    this.setState({ goalStartTime: goalST });
+    this.setState({ goalStartTime: getGoalST() });
     this.setState({ goalEndTime: goalET });
     this.setState({ sleepStartTime: sleepST });
     this.setState({ sleepEndTime: sleepET });
@@ -141,8 +108,7 @@ class IndexScreen extends React.Component {
   // }
 
   render() {
-    const { goalStartTime, goalEndTime, sleepStartTime, sleepEndTime, uID } =
-      this.state;
+    const { goalStartTime, goalEndTime, sleepStartTime, sleepEndTime, uID } = this.state;
     return (
       <View style={styles.layout}>
         <Header></Header>

@@ -21,6 +21,9 @@ class ChangeTimeFramePopup extends React.Component {
       startTime: this.props.startTime,
       endTime: this.props.endTime,
     };
+    console.log(this.props)
+    console.log("startTime" + this.state.startTime)
+    console.log("endTime" + this.state.endTime)
   }
 
   convertToRegular(time) {

@@ -9,6 +9,17 @@ import GamifyScreen from "../screens/Gamify";
 import SupportScreen from "../screens/Support";
 import LoadingScreen from "../screens/Loading";
 
+import { auth, database } from "../screens/firebase";
+import { update, ref, onValue,get, child } from "firebase/database";
+let userID;
+if (auth.currentUser) {
+  userID = auth.currentUser.uid;
+}
+let userName = ref(database, userID + "/userName");
+onValue(userName, async (snapshot) => {
+  userName = await snapshot.val();
+});
+
 //for navigation
 const Tab = createBottomTabNavigator();
 
@@ -148,8 +159,8 @@ const BottomNav = () => {
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name={"Profile"}
+          children={()=><ProfileScreen userName={userName}/>}
           options={{
             tabBarIcon: ({ focused }) => (
               <View

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View, Switch } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Header from "../components/Header";
 import Animated, {
   useSharedValue,
   withTiming,
@@ -37,14 +38,14 @@ updates[[uID] + "/theme"] = "dark";
 update(ref(database), updates);
 
 // class SettingScreen extends React.Component {
-const SettingScreen = () => {
+const ProfileScreen = (props) => {
   // Dark/Light Mode
-  const [darkEnabled, setdarkEnabled] = useState(false);
+  const [lightEnabled, setlightEnabled] = useState(false);
   const toggleSwitch = () => {
-    setdarkEnabled((previousState) => !previousState);
-    console.log("darkEnabled: " + darkEnabled);
+    setlightEnabled((previousState) => !previousState);
+    console.log("lightEnabled: " + lightEnabled);
     const updates = {};
-    updates[[uID] + "/theme"] = darkEnabled ? "dark" : "light";
+    updates[[uID] + "/theme"] = lightEnabled ? "dark" : "light";
     update(ref(database), updates);
     //need to render here
   };
@@ -54,14 +55,14 @@ const SettingScreen = () => {
 
   // general code used for animations
   const progress = useDerivedValue(() => {
-    return darkEnabled ? withTiming(1) : withTiming(0);
+    return lightEnabled ? withTiming(1) : withTiming(0);
   });
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
-      [Colors.light.background, Colors.dark.background]
+      [Colors.dark.background, Colors.light.background]
     );
     return {
       backgroundColor,
@@ -72,7 +73,7 @@ const SettingScreen = () => {
     const color = interpolateColor(
       progress.value,
       [0, 1],
-      [Colors.light.text, Colors.dark.text]
+      [Colors.dark.text, Colors.light.text]
     );
     return {
       color,
@@ -80,43 +81,98 @@ const SettingScreen = () => {
   });
 
   const SWITCH_TRACK_COLOR = {
-    true: "#81b0ff",
-    false: "#767577",
+    true: "#fff096",
+    false: "#81b0ff",
   };
 
   const SWITCH_THUMB_COLOR = {
-    true: "#000",
-    false: "#fff",
+    true: "#000000",
+    false: "#ffffff",
   };
 
   // render(){
   return (
     <Animated.View style={[styles.layout, backgroundAnimation]}>
-      <View style={styles.options}>
-        <Animated.Text
-          style={[styles.lightDarkText, styles.text, textAnimation]}
-        >
-          Light mode
+      {/* <Header></Header> */}
+      <View style={styles.title}>
+        <Animated.Text style={[styles.text, textAnimation]}>
+          PROFILE
         </Animated.Text>
-        <Switch
-          value={darkEnabled}
-          onValueChange={toggleSwitch}
-          trackColor={SWITCH_TRACK_COLOR}
-          thumbColor={SWITCH_THUMB_COLOR}
-          ios_backgroundColor="#3e3e3e"
-          style={styles.switch}
+      </View>
+      <View style={styles.options}>
+        {/* Profile Container */}
+        <View style={[styles.container, styles.profileContainer]}>
+          <Image
+            source={require("../assets/profile.png")}
+            style={styles.pfp}
+          ></Image>
+          <Animated.Text style={[styles.userNameText, textAnimation]}>
+            {props.userName}
+          </Animated.Text>
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
+        />
+        {/* Theme toggle container */}
+        <View style={styles.container}>
+          <Animated.Text style={[styles.optionText, textAnimation]}>
+            Light mode
+          </Animated.Text>
+          <Switch
+            value={lightEnabled}
+            onValueChange={toggleSwitch}
+            trackColor={SWITCH_TRACK_COLOR}
+            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+            ios_backgroundColor="#3e3e3e"
+            style={styles.switch}
+          />
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
+        />
+        {/* Caffine toggle container */}
+        <View style={styles.container}>
+          <Animated.Text style={[styles.optionText, textAnimation]}>
+            Caffine
+          </Animated.Text>
+          <Switch
+            value={lightEnabled}
+            onValueChange={toggleSwitch}
+            trackColor={SWITCH_TRACK_COLOR}
+            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+            ios_backgroundColor="#3e3e3e"
+            style={styles.switch}
+          />
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
         />
       </View>
     </Animated.View>
   );
   // }
 };
-export default SettingScreen;
+export default ProfileScreen;
 
 // Colors for switching themes
 const Colors = {
   dark: {
-    background: "#654CE0",
+    background: "#6A4CE5",
     text: "#fff",
   },
   light: {
@@ -130,21 +186,19 @@ const styles = StyleSheet.create({
   //general Layout
   layout: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
-  //general Text
   text: {
     fontSize: 20,
   },
-  //Back Button
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    position: "absolute",
-    top: 70,
-    left: 20,
+  title: {
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  //general option Text
+  optionText: {
+    fontSize: 20,
+    left: 40,
   },
   //Images
   backImage: {
@@ -164,9 +218,28 @@ const styles = StyleSheet.create({
   },
   // Options container
   options: {
-    position: "absolute",
-    top: 230,
     width: "100%",
+    fontSize: 20,
+  },
+  //general container
+  container: {
+    height: 110,
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    alignContent: "center",
+    // justifyContent: "center",
+  },
+  profileContainer: {
+    height: 140,
+    justifyContent: "space-around",
+  },
+  pfp: {
+    width: 70,
+    height: 70,
+  },
+  userNameText: {
     fontSize: 20,
   },
 });

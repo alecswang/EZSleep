@@ -1,244 +1,187 @@
-import React from "react";
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Fragment,
-} from "react-native";
-import Header from "../components/Header";
-import Graph from "../components/Graph";
-import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
-
-import firebase from "firebase/compat/app";
-
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View, Switch } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+  interpolateColor,
+  useDerivedValue,
+} from "react-native-reanimated";
+// import {
+//   backgroundAnimation,
+//   textAlign,
+//   toggleSwitch,
+//   darkEnabled,
+// } from "../utilities/themeChange";
 
-import { auth, database } from "../screens/firebase";
-import { update, ref, onValue, once } from "firebase/database";
-let userID;
+// import {
+//   getDatabase,
+//   ref,
+//   set,
+//   onValue,
+//   update,
+// } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+import { auth, database } from "./firebase";
+import { update, ref } from "firebase/database";
+let uID;
 if (auth.currentUser) {
-  userID = auth.currentUser.uid;
+  uID = auth.currentUser.uid;
 }
 
-const goalSTRef = ref(database, userID + "/goalStartTime");
-const goalETRef = ref(database, userID + "/goalStartTime");
-const sleepSTRef = ref(database, userID + "/goalStartTime");
-const sleepETRef = ref(database, userID + "/goalStartTime");
+//update firebase
+const updates = {};
+updates[[uID] + "/theme"] = "dark";
+update(ref(database), updates);
 
-async function getGoalST(){
-  const snapshot = await once(goalSTRef);
-  const goalST = snapshot.val();
-  return goalST;
-}
-
-// let goalST = ref(database, userID + "/goalStartTime");
-onValue(goalSTRef, async (snapshot) => {
-  getGoalST();
-});
-let goalET = ref(database, userID + "/goalEndTime");
-onValue(goalET, (snapshot) => {
-  goalET = snapshot.val();
-});
-let sleepST = ref(database, userID + "/sleepStartTime");
-onValue(sleepST, (snapshot) => {
-  sleepST = snapshot.val();
-});
-let sleepET = ref(database, userID + "/sleepEndTime");
-onValue(sleepET, (snapshot) => {
-  sleepET = snapshot.val();
-});
-
-//Index/Main Page
-class IndexScreen extends React.Component {
-  state = { currentUser: null };
-  componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
+// class SettingScreen extends React.Component {
+class SettingScreen extends React.Component {
+  // Dark/Light Mode
   constructor(props) {
     super(props);
-    //To get the Current Date
-    // var date = new Date().getDate();
     this.state = {
-      goalStartTime: getGoalST(),
-      goalEndTime: goalET,
-      sleepStartTime: sleepST,
-      sleepEndTime: sleepET,
-      uID:userID,
+      lightEnabled: false,
     };
-    console.log("拿" + getGoalST())
-    console.log(getGoalST())
+    console.log("legit" + this.state.lightEnabled)
+    this.toggleSwitch = this.toggleSwitch.bind(this)
+    // this.progress = this.progress.bind(this)
   }
 
-  // currentTimeDisplay = () => {
-  //   styles.currentTime.left = 100;
-  // }
-
-  updateTime = () => {
-    // let goalST = ref(database, userID + "/goalStartTime");
-    // onValue(goalST, (snapshot) => {
-    //   goalST = snapshot.val();
-    // });
-    let goalET = ref(database, userID + "/goalEndTime");
-    onValue(goalET, (snapshot) => {
-      goalET = snapshot.val();
-    });
-    let sleepST = ref(database, userID + "/sleepST");
-    onValue(sleepST, (snapshot) => {
-      sleepST = snapshot.val();
-    });
-    let sleepET = ref(database, userID + "/sleepET");
-    onValue(sleepET, (snapshot) => {
-      sleepET = snapshot.val();
-    });
-
-    //update state
-    this.setState({ goalStartTime: getGoalST() });
-    this.setState({ goalEndTime: goalET });
-    this.setState({ sleepStartTime: sleepST });
-    this.setState({ sleepEndTime: sleepET });
+  toggleSwitch = () => {
+    this.setState({ darkEnabled: !darkEnabled });
+    console.log("lightEnabled: " + this.state.lightEnabled);
+    const updates = {};
+    updates[[uID] + "/theme"] = this.state.lightEnabled ? "dark" : "light";
+    update(ref(database), updates);
+    //need to render here
   };
 
-  // handleTimeChange = (newST, newET) => {
-  //   this.setState({ startTime: newST });
-  //   this.setState({ endTime: newET });
-  // }
+  // Back arrow button
 
-  render() {
-    const { goalStartTime, goalEndTime, sleepStartTime, sleepEndTime, uID } = this.state;
-    return (
-      <View style={styles.layout}>
-        <Header></Header>
-        {/* sun moon sun indicator */}
-        <View style={styles.indicatorContainer}>
-          <Image
-            style={styles.halfSunImage}
-            source={require("../assets/sunRight.png")}
-          />
-          <Image
-            style={styles.moonImage}
-            source={require("../assets/moon.png")}
-          />
-          <Image
-            style={styles.halfSunImage}
-            source={require("../assets/sunLeft.png")}
-          />
-        </View>
-
-        {/* Nav to Login Page(Testing Purpose) */}
-        {/* <Pressable
-          onPress={() => this.props.navigation.navigate("Login")}
-          style={styles.loginButton}
-        >
-          <Image
-            style={styles.iconImage}
-            source={require("../assets/favicon.png")}
-          ></Image>
-        </Pressable> */}
-
-        {/* SleepGoalGraph */}
-        <Graph
-          title="Sleep Goal"
-          goalStart="21"
-          goalEnd="6"
-          barColor="#3FDCFF"
-          startTime={goalStartTime}
-          endTime={goalEndTime}
-        />
-        <Graph
-          title="Actual Sleep"
-          goalStart="24"
-          goalEnd="9"
-          barColor="#FEE45A"
-          startTime={sleepStartTime}
-          endTime={sleepEndTime}
-        />
-
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <ChangeTimeFramePopup
-            title={"Sleep Goal"}
-            style={styles.goalButton}
-            startTime={goalStartTime}
-            endTime={goalEndTime}
-            updateTime={this.updateTime}
-            uID={uID}
-            // onTimeChange={this.handleTimeChange}
-          ></ChangeTimeFramePopup>
-
-          <ChangeTimeFramePopup
-            title={"Sleep Time"}
-            style={styles.timeButton}
-            startTime={sleepStartTime}
-            endTime={sleepEndTime}
-            updateTime={this.updateTime}
-            uID={uID}
-            // onTimeChange={this.handleTimeChange}
-          ></ChangeTimeFramePopup>
-        </View>
-
-        {/* <BottomNav nav={this.props} /> */}
-      </View>
+  // general code used for animations
+  progress = useDerivedValue(() => {
+    // return this.state.lightEnabled ? withTiming(1) : withTiming(0);
+    return 0;
+  });
+  // Animation for background
+  backgroundAnimation = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      [Colors.dark.background, Colors.light.background]
     );
-  }
-}
+    return {
+      backgroundColor,
+    };
+  });
+  // Animation for textColors
+  textAnimation = useAnimatedStyle(() => {
+    const color = interpolateColor(
+      progress.value,
+      [0, 1],
+      [Colors.dark.text, Colors.light.text]
+    );
+    return {
+      color,
+    };
+  });
 
-export default IndexScreen;
+  SWITCH_TRACK_COLOR = {
+    true: "#fff096",
+    false: "#81b0ff",
+  };
+
+  SWITCH_THUMB_COLOR = {
+    true: "#000000",
+    false: "#ffffff",
+  };
+
+  render(){
+    const { lightEnabled } = this.state;
+  return (
+    <Animated.View style={[styles.layout, this.backgroundAnimation]}>
+      <View style={styles.options}>
+        <Animated.Text
+          style={[styles.lightDarkText, styles.text, this.textAnimation]}
+        >
+          {this.props.userName}
+        </Animated.Text>
+        <Animated.Text
+          style={[styles.lightDarkText, styles.text, this.textAnimation]}
+        >
+          Light mode
+        </Animated.Text>
+        <Switch
+          value={lightEnabled}
+          onValueChange={this.toggleSwitch}
+          trackColor={this.SWITCH_TRACK_COLOR}
+          // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+          ios_backgroundColor="#3e3e3e"
+          style={styles.switch}
+        />
+      </View>
+    </Animated.View>
+  );
+  }
+};
+export default SettingScreen;
+
+// Colors for switching themes
+const Colors = {
+  dark: {
+    background: "#6A4CE5",
+    text: "#fff",
+  },
+  light: {
+    background: "#7974E8",
+    text: "#000",
+  },
+};
 
 //Stylesheet
 const styles = StyleSheet.create({
   //general Layout
   layout: {
     flex: 1,
-    // justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#6A4CE5",
-  },
-  indicatorContainer: {
-    width: "90%",
-    height: 50,
-    paddingTop: 50,
-    paddingBottom: 50,
-    flexWrap: "wrap",
-    // flexDirection: "row",
-    alignContent: "space-between",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  //general Text
+  text: {
+    fontSize: 20,
+  },
+  //Back Button
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    position: "absolute",
+    top: 70,
+    left: 20,
   },
   //Images
-  iconImage: {
+  backImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
   },
-  moonImage: {
-    width: 45,
-    height: 45,
+  //Switch
+  switch: {
+    position: "absolute",
+    right: 40,
   },
-  halfSunImage: {
-    width: 25,
-    height: 50,
+  //Options: light/dark text
+  lightDarkText: {
+    position: "absolute",
+    left: 40,
   },
-  // Light/Dark Mode
-  lightContainer: {
-    backgroundColor: "#d0d0c0",
+  // Options container
+  options: {
+    position: "absolute",
+    top: 230,
+    width: "100%",
+    fontSize: 20,
   },
-  darkContainer: {
-    backgroundColor: "#242c40",
-  },
-  lightThemeText: {
-    color: "#242c40",
-  },
-  darkThemeText: {
-    color: "#d0d0c0",
-  },
-  // goalButton: {
-  //   margin: 5,
-  // },
-  // timeButton: {},
 });

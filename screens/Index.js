@@ -15,6 +15,7 @@ import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
 import firebase from "firebase/compat/app";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { Themes } from "../utilities/Themes";
 
 import { auth, database } from "../screens/firebase";
 import { update, ref, onValue,get, child } from "firebase/database";
@@ -146,7 +147,7 @@ class IndexScreen extends React.Component {
     const { goalStartTime, goalEndTime, sleepStartTime, sleepEndTime, uID } =
       this.state;
     return (
-      <View style={styles.layout}>
+      <View style={[styles.layout, this.props.lightModeEnabled ? Themes.light : Themes.dark,]}>
         <Header></Header>
         {/* sun moon sun indicator */}
         <View style={styles.indicatorContainer}>

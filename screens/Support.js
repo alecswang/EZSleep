@@ -10,7 +10,7 @@ if (auth.currentUser) {
 }
 import { update, ref, onValue } from "firebase/database";
 
-import { themes } from "../utilities/themes";
+import { Themes } from "../utilities/Themes";
 
 let currentTheme = ref(database, uID + "/theme");
 if (currentTheme) {
@@ -21,13 +21,13 @@ if (currentTheme) {
 }
 
 //Profile Page
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
   const nav = useNavigation();
   return (
     <View
       style={[
         styles.layout,
-        currentTheme == "light" ? themes.light : themes.dark,
+        props.lightModeEnabled ? Themes.light : Themes.dark,
       ]}
     >
       <Text style={styles.title}>Support</Text>

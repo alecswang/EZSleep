@@ -39,23 +39,13 @@ update(ref(database), updates);
 
 // class SettingScreen extends React.Component {
 const ProfileScreen = (props) => {
-  // Dark/Light Mode
-  const [lightEnabled, setlightEnabled] = useState(false);
-  const toggleSwitch = () => {
-    setlightEnabled((previousState) => !previousState);
-    console.log("lightEnabled: " + lightEnabled);
-    const updates = {};
-    updates[[uID] + "/theme"] = lightEnabled ? "dark" : "light";
-    update(ref(database), updates);
-    //need to render here
-  };
 
   // Back arrow button
   const nav = useNavigation();
 
   // general code used for animations
   const progress = useDerivedValue(() => {
-    return lightEnabled ? withTiming(1) : withTiming(0);
+    return props.lightModeEnabled ? withTiming(1) : withTiming(0);
   });
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
@@ -124,8 +114,8 @@ const ProfileScreen = (props) => {
             Light mode
           </Animated.Text>
           <Switch
-            value={lightEnabled}
-            onValueChange={toggleSwitch}
+            value={props.lightModeEnabled}
+            onValueChange={props.updateTheme}
             trackColor={SWITCH_TRACK_COLOR}
             // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
             ios_backgroundColor="#3e3e3e"
@@ -143,16 +133,8 @@ const ProfileScreen = (props) => {
         {/* Melatonin toggle container */}
         <View style={styles.container}>
           <Animated.Text style={[styles.optionText, textAnimation]}>
-          Melatonin
+            Melatonin
           </Animated.Text>
-          <Switch
-            value={lightEnabled}
-            onValueChange={toggleSwitch}
-            trackColor={SWITCH_TRACK_COLOR}
-            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
-            ios_backgroundColor="#3e3e3e"
-            style={styles.switch}
-          />
         </View>
         {/* dividing line */}
         <View
@@ -167,14 +149,22 @@ const ProfileScreen = (props) => {
           <Animated.Text style={[styles.optionText, textAnimation]}>
             Caffine
           </Animated.Text>
-          <Switch
-            value={lightEnabled}
-            onValueChange={toggleSwitch}
-            trackColor={SWITCH_TRACK_COLOR}
-            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
-            ios_backgroundColor="#3e3e3e"
-            style={styles.switch}
-          />
+          {/* need to switch to react-time-picker */}
+
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
+        />
+        {/* Sleep Needed */}
+        <View style={styles.container}>
+          <Animated.Text style={[styles.optionText, textAnimation]}>
+            Sleep Needed
+          </Animated.Text>
         </View>
         {/* dividing line */}
         <View

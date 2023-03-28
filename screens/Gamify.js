@@ -2,12 +2,18 @@ import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Themes } from "../utilities/Themes";
 
 //Profile Page
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
   const nav = useNavigation();
   return (
-    <View style={styles.layout}>
+    <View
+      style={[
+        styles.layout,
+        props.lightModeEnabled ? Themes.light : Themes.dark,
+      ]}
+    >
       <Text style={styles.title}>Gamify</Text>
     </View>
   );

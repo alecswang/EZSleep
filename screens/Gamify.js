@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Themes } from "../utilities/Themes";
 
 //Profile Page
-const ProfileScreen = (props) => {
+const GamifyScreen = (props) => {
   const nav = useNavigation();
   return (
     <View
@@ -19,7 +19,7 @@ const ProfileScreen = (props) => {
   );
 };
 
-export default ProfileScreen;
+export default GamifyScreen;
 
 const styles = StyleSheet.create({
   //general Layout

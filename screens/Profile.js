@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View, Switch } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View, Switch, ScrollView } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Header from "../components/Header";
@@ -39,7 +39,6 @@ update(ref(database), updates);
 
 // class SettingScreen extends React.Component {
 const ProfileScreen = (props) => {
-
   // Back arrow button
   const nav = useNavigation();
 
@@ -84,6 +83,9 @@ const ProfileScreen = (props) => {
   return (
     <Animated.View style={[styles.layout, backgroundAnimation]}>
       {/* <Header></Header> */}
+      <View style={[styles.scrollViewContainer]}>
+      <ScrollView style={[styles.scrollContainer]} contentContainerStyle={styles.scrollInnerContainer}>
+        
       <View style={styles.title}>
         <Animated.Text style={[styles.text, textAnimation]}>
           PROFILE
@@ -150,7 +152,6 @@ const ProfileScreen = (props) => {
             Caffine
           </Animated.Text>
           {/* need to switch to react-time-picker */}
-
         </View>
         {/* dividing line */}
         <View
@@ -163,7 +164,7 @@ const ProfileScreen = (props) => {
         {/* Sleep Needed */}
         <View style={styles.container}>
           <Animated.Text style={[styles.optionText, textAnimation]}>
-            Sleep Needed
+            My Sleep Need
           </Animated.Text>
         </View>
         {/* dividing line */}
@@ -174,6 +175,28 @@ const ProfileScreen = (props) => {
             borderWidth: 1,
           }}
         />
+        {/* Wake Time Goal */}
+        <View style={styles.container}>
+          <Animated.Text style={[styles.optionText, textAnimation]}>
+            Wake Time Goal
+          </Animated.Text>
+        </View>
+        {/* dividing line */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1,
+          }}
+        />
+        {/* <TimePicker
+          value="06:00 PM"
+          clockIcon={null}
+          disableClock
+          format="hh:mm a"
+        /> */}
+      </View>
+      </ScrollView>
       </View>
     </Animated.View>
   );
@@ -206,6 +229,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 30,
     marginBottom: 20,
+
   },
   //general option Text
   optionText: {
@@ -253,5 +277,14 @@ const styles = StyleSheet.create({
   },
   userNameText: {
     fontSize: 20,
+  },
+  scrollViewContainer:{
+    height: 500,
+    overflow: "hidden",
+    width: "100%",
+  },
+  scrollInnerContainer:{
+    alignItems: "center",
+    paddingBottom: 1000,
   },
 });

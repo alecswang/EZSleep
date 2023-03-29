@@ -70,6 +70,22 @@ if (auth.currentUser) {
 // });
 // }
 
+// const goalSTRef = ref(database, userID + "/goalStartTime");
+// const goalETRef = ref(database, userID + "/goalEndTime");
+// const sleepSTRef = ref(database, userID + "/sleepStartTime");
+// const sleepETRef = ref(database, userID + "/sleepEndTime");
+
+// const goalSTPromise = get(goalSTRef).then((snapshot) => snapshot.val());
+// const goalETPromise = get(goalETRef).then((snapshot) => snapshot.val());
+// const sleepSTPromise = get(sleepSTRef).then((snapshot) => snapshot.val());
+// const sleepETPromise = get(sleepETRef).then((snapshot) => snapshot.val());
+
+// let goalST, goalET, sleepST, sleepET;
+// Promise.all([goalSTPromise, goalETPromise, sleepSTPromise, sleepETPromise]).then((values) => {
+//   [goalST, goalET, sleepST, sleepET] = values;
+//   // Do something with the data
+// });
+
 let goalST = ref(database, userID + "/goalStartTime");
 onValue(goalST, async (snapshot) => {
   goalST = await snapshot.val();

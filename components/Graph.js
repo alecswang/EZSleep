@@ -44,6 +44,8 @@ class Graph extends React.Component {
 
   displayTime = function (time) {
     this.setTime(time);
+    console.log("this时间" + this.time)
+    console.log("时间" + time)
     return {
       width: 6,
       height: 40,

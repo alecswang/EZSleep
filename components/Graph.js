@@ -4,6 +4,12 @@ import { View, Text, StyleSheet, Image } from "react-native";
 class Graph extends React.Component {
   constructor(props) {
     super(props);
+    if(props.startTime == null || props.endTime == null){
+      // console.log(this.props.updateTime)
+      // console.log(this.props)
+      // props.updateTime();
+      console.log("反悔啊web反悔哦恩爱吧v恶气")
+    }
   }
 
   date = new Date().getDate();
@@ -44,8 +50,11 @@ class Graph extends React.Component {
 
   displayTime = function (time) {
     this.setTime(time);
-    console.log("this时间" + this.time)
-    console.log("时间" + time)
+    console.log(this.props.startTime)
+    console.log(this.props.endTime)
+
+    console.log("this.time: " + this.time)
+    console.log("time: " + time)
     return {
       width: 6,
       height: 40,

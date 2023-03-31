@@ -8,11 +8,15 @@ class Header extends React.Component {
   date = new Date().getDate(); //To get the Current Date
   month = new Date().getMonth() + 1; //To get the Current Month
   year = new Date().getFullYear(); //To get the Current Year
+  fullDate = new Date(Date.now());
+
   render() {
     return (
       <View style={styles.container}>
         {/* Switch to the day before */}
-        <Pressable>
+        <Pressable
+          onPress={this.props.showPreviousDay}
+        >
           <Image
             style={styles.arrow}
             source={require("../assets/left-arrow.png")}
@@ -35,7 +39,7 @@ class Header extends React.Component {
           ></Image>
         </Pressable>
         {/* Switch to the day after */}
-        <Pressable>
+        <Pressable onPress={this.props.showNextDay}>
           <Image
             style={styles.arrow}
             source={require("../assets/right-arrow.png")}

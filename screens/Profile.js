@@ -84,7 +84,7 @@ const ProfileScreen = (props) => {
     <Animated.View style={[styles.layout, backgroundAnimation]}>
       {/* <Header></Header> */}
       <View style={[styles.scrollViewContainer]}>
-      <ScrollView style={[styles.scrollContainer]} contentContainerStyle={styles.scrollInnerContainer}>
+      <ScrollView contentContainerStyle={styles.scrollInnerContainer}>
         
       <View style={styles.title}>
         <Animated.Text style={[styles.text, textAnimation]}>

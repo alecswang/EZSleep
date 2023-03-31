@@ -27,40 +27,34 @@ class ChangeTimeFramePopup extends React.Component {
   }
 
   convertToRegular(time) {
-    let res = time;
-    if (time > 12) {
-      res -= 12;
+    let hour = Math.floor(time);
+    let minute = Math.round((time - hour) * 60);
+  
+    if (hour == 0) {
+      hour = 12;
+    } else if (hour > 12) {
+      hour -= 12;
     }
-    res = "" + res.toString().split(".")[0];
-    // if (res == "0") {res = "12"; }
-    if (time.toString().split(".")[1]) {
-      res += ":" + parseInt(time.toString().split(".")[1]) / 100 * 60;
-    } else {
-      res += ":00";
-    }
-    if(parseInt(time.toString().split(".")[1]) == 5){res += 0;}
-    res += time > 12 ? "pm" : "am";
-    return res;
+  
+    let suffix = time >= 12 ? "pm" : "am";
+  
+    return hour + ":" + (minute < 10 ? "0" : "") + minute + suffix;
   }
 
   convertToMilitary(time) {
-    let hour;
-    hour = time.toString().split(":")[0] / 1 + time.toString().split(":")[1].slice(0, 2) / 60;
-    if (time.toString().split(":")[1].slice(2) == "pm") {
-      hour += 12;
+    let [hour, minute] = time.split(":");
+    let isPM = time.endsWith("pm");
+  
+    hour = parseInt(hour);
+    minute = parseInt(minute);
+  
+    if (hour == 12) {
+      hour = isPM ? 12 : 0;
+    } else {
+      hour += isPM ? 12 : 0;
     }
-    // if (time.length == 7) {
-    //   hour = time.slice(0, 2) / 1 + time.slice(3, 5) / 60;
-    //   if (time.slice(5) == "pm") {
-    //     hour += 12;
-    //   }
-    // } else {
-    //   hour = time.slice(0, 1) / 1 + time.slice(2, 4) / 60;
-    //   if (time.slice(4) == "pm") {
-    //     hour += 12;
-    //   }
-    // }
-    return hour;
+  
+    return hour + minute / 60;
   }
   
   render() {
@@ -234,9 +228,15 @@ class ChangeTimeFramePopup extends React.Component {
                   console.log("c: " + this.props)
                   console.log(this.props)
                   const updates = {};
-                  updates[[this.props.uID] + "/" + this.props.reference + "StartTime"] =
-                   startTime;
-                  updates[[this.props.uID] + "/" + this.props.reference + "EndTime"] = endTime;
+                  if( this.props.reference == "goal"){
+                    updates[[this.props.uID] + "/" + this.props.reference + "StartTime"] =
+                    startTime;
+                    updates[[this.props.uID] + "/" + this.props.reference + "EndTime"] = endTime;
+                  }else{
+                    updates[[this.props.uID] + "/" + this.props.currentDay + "/" + this.props.reference + "StartTime"] =
+                     startTime;
+                    updates[[this.props.uID] + "/" + this.props.currentDay + "/" + this.props.reference + "EndTime"] = endTime;
+                  }
                   update(ref(database), updates);
                   this.props.updateTime();
                   this.setState({ modalVisible: !modalVisible });
@@ -260,16 +260,6 @@ class ChangeTimeFramePopup extends React.Component {
           </Text>
         </Pressable>
       </View>
-      //   <Modal
-      //     transparent={true}
-      //     visible={true}
-      //     onPress={() => this.props.nav.navigation.navigate("Profile")}
-      //     style={styles.changeTimeFrameButton}
-      //   >
-      //     <Text style={styles.changeTimeFrameText}>
-      //       {"Change " + this.props.title}
-      //     </Text>
-      //   </Modal>
     );
   }
 }

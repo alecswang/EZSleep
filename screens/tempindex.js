@@ -78,6 +78,19 @@ onValue(sleepET, async (snapshot) => {
   sleepET = await snapshot.val();
 });
 
+const ready = new Promise((resolve) => {
+  onValue(ref(database, userID + "/goalStartTime"), (snap) => {
+    if (snap.val() === true) {
+      resolve();
+      console.log("准备好了" + snap.val());
+    }
+  });
+});
+
+async function getData(){
+await ready;
+}
+
 //Index/Main Page
 class IndexScreen extends React.Component {
   goalST = null;
@@ -85,52 +98,35 @@ class IndexScreen extends React.Component {
   sleepST = null;
   sleepET = null;
   userID = null;
-   getUser() {
+   async getUser() {
+    await ready;
     if (auth.currentUser) {
-      this.userID = auth.currentUser.uid;
       while (this.userID == null) {
         this.userID = auth.currentUser.uid;
         console.log("hi" + this.userID);
       }
     }
 
-    let goalSTRef = ref(database, this.userID + "/goalStartTime");
-    // get(ref(database), this.userID + "/goalStartTime").then((snapshot) => {
-    //   if (snapshot.exists()) {
-    //     this.goalST = snapshot.val();
-    //     console.log(snapshot.val());
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    //   console.log("Just to show");
-    // }).catch((error) => {
-    //   console.error(error);
-    //   console.log(error);
-    // });
+    while(this.goalST == null || this.goalST == undefined){
+    let goalSTRef = ref(database, userID + "/goalStartTime");
     onValue(goalSTRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.goalST = snapshot.val();
-        console.log("start" + this.goalST);
-      } else {
-        console.log("No data available");
-      }
-    }, (error) => {
-      console.error("huh" + error);
+      this.goalST = snapshot.val();
     });
-    let goalETRef = ref(database, this.userID + "/goalEndTime");
+    let goalETRef = ref(database, userID + "/goalEndTime");
     onValue(goalETRef, (snapshot) => {
-      const data = snapshot.val();
-      this.goalET = data;
+      this.goalET = snapshot.val();
     });
-    let sleepSTRef = ref(database, this.userID + "/" + currentDay + "/sleepStartTime");
+    let sleepSTRef = ref(database, userID + "/" + currentDay + "/sleepStartTime");
     onValue(sleepSTRef, (snapshot) => {
       this.sleepST = snapshot.val();
     });
-    let sleepETRef = ref(database, this.userID + "/" + currentDay + "/sleepEndTime");
+    let sleepETRef = ref(database, userID + "/" + currentDay + "/sleepEndTime");
     onValue(sleepETRef, (snapshot) => {
       this.sleepET = snapshot.val();
     });
+    // console.log("发哦福娃福娃福娃" + this.goalSTRef)
     // console.log(this.goalST)
+  }
 
     //update state
     this.state = {
@@ -145,9 +141,11 @@ class IndexScreen extends React.Component {
   componentDidMount() {
     const { currentUser } = firebase.auth();
     this.setState({ currentUser });
+    this.getUser();
   }
   constructor(props) {
     super(props);
+    getData();
     this.getUser();
     //To get the Current Date
     // var date = new Date().getDate();
@@ -157,6 +155,7 @@ class IndexScreen extends React.Component {
       sleepStartTime: this.sleepST,
       sleepEndTime: this.sleepET,
       userID: this.userID,
+      change: true,
     };
     console.log("id" + this.userID);
     console.log("here" + this.goalST);
@@ -194,6 +193,7 @@ class IndexScreen extends React.Component {
     this.setState({ goalEndTime: goalET });
     this.setState({ sleepStartTime: sleepST });
     this.setState({ sleepEndTime: sleepET });
+    this.setState({ change: !this.state.change });
     console.log(goalST);
     console.log(goalET);
     console.log(this.state.goalStartTime);
@@ -220,6 +220,7 @@ class IndexScreen extends React.Component {
       sleepStartTime,
       sleepEndTime,
       userID,
+      change,
     } = this.state;
     return (
       <View

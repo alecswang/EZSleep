@@ -6,29 +6,55 @@ import { Themes } from "../utilities/Themes";
 
 import { Canvas, useFrame } from "@react-three/fiber/native";
 
+// let active = false;
+
 function Box(props) {
   const mesh = useRef(null);
   const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
-  const [previousMousePosition, setPreviousMousePosition] = useState({ x: 0, y: 0 });
+  const [previousMousePosition, setPreviousMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  useFrame(
-    (state, delta) => {
-      if (active) {
-      console.log(state.mouse.x);
-      (mesh.current.rotation.x += 0.01);
-      (mesh.current.rotation.y += 0.01)
-      }
+  useFrame((state, delta) => {
+    // console.log("cur " + state.mouse.y);
+    // console.log("prev " + previousMousePosition.y);
+    // if (
+    //   active &&
+    //   state.mouse.y - previousMousePosition.y < 0.35 &&
+    //   state.mouse.y - previousMousePosition.y > -0.35 &&
+    //   state.mouse.x - previousMousePosition.x < 0.35 &&
+    //   state.mouse.x - previousMousePosition.x > -0.35
+    // )
+    // console.log("inside "+ props.active);
+    if (props.active) {
+      console.log("hi");
+      // console.log("y: " + state.mouse.y);
+      // console.log("prevYDiff " + (previousMousePosition.y));
+      // console.log(state.mouse.x - previousMousePosition.x);
+
+      mesh.current.rotation.y += -(state.mouse.x - previousMousePosition.x) * 1;
+      mesh.current.rotation.x += -(state.mouse.y - previousMousePosition.y) * 1;
     }
-  );
+    setPreviousMousePosition({ x: state.mouse.x, y: state.mouse.y });
+  });
+
+  // const handlePointerMove = (event) => {
+  //   if (active) {
+  //     mesh.current.rotation.x += (event.clientY - previousMousePosition.y) * 0.005;
+  //     mesh.current.rotation.y += (event.clientX - previousMousePosition.x) * 0.005;
+  //     setPreviousMousePosition({ x: event.clientX, y: event.clientY });
+  //   }
+  // };
+
   return (
     <mesh
       {...props}
       ref={mesh}
-      scale={active ? 1.5 : 1}
-      onClick={(event) => setActive(!active)}
+      // onClick={(event) => setActive(!active)}
       onPointerOver={(event) => setHover(true)}
       onPointerOut={(event) => setHover(false)}
+      // onPointerMove={handlePointerMove}
     >
       <boxGeometry args={[1, 1, 1]} />
       <meshNormalMaterial color={hovered ? "hotpink" : "orange"} />
@@ -40,54 +66,17 @@ function Box(props) {
 const GamifyScreen = (props) => {
   const nav = useNavigation();
 
-  const [isDragging, setDragging] = useState(false);
-  const [previousMousePosition, setPreviousMousePosition] = useState({
-    x: null,
-    y: null,
-  });
-  const handlePointerUp = (event) => {
-    console.log("moving movin");
-    setDragging(false);
-    event.target.style.cursor = "grab";
+  const [active, setActive] = useState(false);
+  // canvas.addEventListener('pointerdown', handlePointerDown);
+
+  const handleTouchStart = () => {
+    console.log(active);
+    setActive(true);
+    console.log(active);
   };
 
-  const handlePointerDown = (event) => {
-    console.log("moving movin");
-    setDragging(true);
-    setPreviousMousePosition({
-      x: event.clientX,
-      y: event.clientY,
-    });
-  };
-
-  const handlePointerMove = (event) => {
-    console.log("moving movin");
-    if (!isDragging) {
-      return;
-    }
-
-    const delta = {
-      x: event.clientX - previousMousePosition.x,
-      y: event.clientY - previousMousePosition.y,
-    };
-
-    // setPreviousMousePosition({
-    //   x: event.clientX,
-    //   y: event.clientY,
-    // });
-
-    const canvas = event.target;
-    // canvas.style.cursor = "grabbing";
-
-    const rotation = {
-      x: delta.y * 0.01,
-      y: delta.x * 0.01,
-      z: 0,
-    };
-
-    canvas.scene.rotation.x += rotation.x;
-    canvas.scene.rotation.y += rotation.y;
-    canvas.scene.rotation.z += rotation.z;
+  const handleTouchEnd = () => {
+    setActive(false);
   };
 
   return (
@@ -97,14 +86,13 @@ const GamifyScreen = (props) => {
       </View>
       <Canvas
         style={styles.canvasLayout}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <Box position={[-1.2, 0, 0]} />
-        <Box position={[1.2, 0, 0]} />
+        <pointLight position={[10, 10, 10]}/>
+        <Box position={[-1.2, 0, 0]}  active={active}/>
+        <Box position={[1.2, 0, 0]}  active={active}/>
       </Canvas>
     </>
   );

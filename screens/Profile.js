@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 30,
     marginBottom: 20,
-
   },
   //general option Text
   optionText: {
@@ -279,7 +278,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   scrollViewContainer:{
-    height: 500,
+    height: 750,
     overflow: "hidden",
     width: "100%",
   },

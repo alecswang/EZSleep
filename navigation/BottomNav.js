@@ -8,6 +8,7 @@ import IndexScreen from "../screens/Index";
 import GamifyScreen from "../screens/Gamify";
 import SupportScreen from "../screens/Support";
 import LoadingScreen from "../screens/Loading";
+import LearnScreen from "../screens/Learn";
 
 import { auth, database } from "../screens/firebase";
 import { update, ref, onValue, get, child } from "firebase/database";
@@ -149,9 +150,9 @@ class BottomNav extends React.Component {
             }}
           />
           <Tab.Screen
-            name="Support"
+            name="Learn"
             children={() => (
-              <SupportScreen lightModeEnabled={lightModeEnabled} />
+              <LearnScreen lightModeEnabled={lightModeEnabled} />
             )}
             options={{
               tabBarIcon: ({ focused }) => (
@@ -163,7 +164,7 @@ class BottomNav extends React.Component {
                   }}
                 >
                   <Image
-                    source={require("../assets/support.png")}
+                    source={require("../assets/light-bulb.png")}
                     resizeMode="contain"
                     style={{
                       width: 25,
@@ -177,7 +178,7 @@ class BottomNav extends React.Component {
                       fontSize: 12,
                     }}
                   >
-                    SUPPORT
+                    Learn
                   </Text>
                 </View>
               ),

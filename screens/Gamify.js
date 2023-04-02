@@ -25,8 +25,8 @@ function Box(props) {
       state.mouse.y - previousMousePosition.y > -0.35 &&
       state.mouse.x - previousMousePosition.x < 0.35 &&
       state.mouse.x - previousMousePosition.x > -0.35
-    ){
-    // if (active) {
+    ) {
+      // if (active) {
       // console.log("hi");
       // console.log("y: " + state.mouse.y);
       // console.log("prevYDiff " + (previousMousePosition.y));
@@ -80,7 +80,12 @@ const GamifyScreen = (props) => {
 
   return (
     <>
-      <View style={styles.layout}>
+      <View
+        style={[
+          styles.layout,
+          props.lightModeEnabled ? Themes.light : Themes.dark,
+        ]}
+      >
         <Text style={styles.title}>Hello</Text>
       </View>
       <Canvas

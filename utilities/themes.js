@@ -2,10 +2,10 @@
 export const Themes = {
   dark: {
     backgroundColor: "#6A4CE5",
-    textColor: "#fff",
+    color: "#fff",
   },
   light: {
     backgroundColor: "#7974E8",
-    textColor: "#000",
+    color: "#000",
   },
 };

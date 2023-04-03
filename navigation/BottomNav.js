@@ -10,7 +10,7 @@ import SupportScreen from "../screens/Support";
 import LoadingScreen from "../screens/Loading";
 import LearnScreen from "../screens/Learn";
 
-import { auth, database } from "../screens/firebase";
+import { auth, database } from "../utilities/firebase";
 import { update, ref, onValue, get, child } from "firebase/database";
 let userID;
 if (auth.currentUser) {

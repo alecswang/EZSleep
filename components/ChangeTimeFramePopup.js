@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
-import { auth, database } from "../screens/firebase";
+import { auth, database } from "../utilities/firebase";
 import { update, ref, onValue } from "firebase/database";
 
 class ChangeTimeFramePopup extends React.Component {

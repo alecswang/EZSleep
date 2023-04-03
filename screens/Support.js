@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { auth, database } from "./firebase";
+import { auth, database } from "../utilities/firebase";
 let uID;
 if (auth.currentUser) {
   uID = auth.currentUser.uid;

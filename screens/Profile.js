@@ -25,7 +25,7 @@ import Animated, {
 //   onValue,
 //   update,
 // } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
-import { auth, database } from "./firebase";
+import { auth, database } from "../utilities/firebase";
 import { update, ref } from "firebase/database";
 let uID;
 if (auth.currentUser) {

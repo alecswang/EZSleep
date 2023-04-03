@@ -17,7 +17,7 @@ import firebase from "firebase/compat/app";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Themes } from "../utilities/Themes";
 
-import { auth, database } from "../screens/firebase";
+import { auth, database } from "../utilities/firebase";
 import { update, ref, onValue, get, child } from "firebase/database";
 let userID = null;
 if (auth.currentUser) {

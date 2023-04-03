@@ -52,6 +52,8 @@ class Graph extends React.Component {
 
   displayTime = function (time) {
     this.setTime(time);
+    this.props.updateTime;
+    console.log(this.props.title)
     console.log(this.props.startTime)
     console.log(this.props.endTime)
 
@@ -62,14 +64,28 @@ class Graph extends React.Component {
     if(typeof(this.time) != "number"){
       console.log("holy fucking shit ")
     }
-    return {
-      width: 6,
-      height: 40,
-      backgroundColor: this.props.barColor,
-      position: "absolute",
-      bottom: 10,
-      left: this.time,
-    };
+    if(isNaN(this.time) == false){
+      console.log(this.time)
+      console.log(isNaN(this.time))
+      return {
+        width: 6,
+        height: 40,
+        backgroundColor: this.props.barColor,
+        position: "absolute",
+        bottom: 10,
+        left: this.time,
+      };
+    }else{
+      console.log("not a number")
+      return {
+        width: 6,
+        height: 40,
+        backgroundColor: this.props.barColor,
+        position: "absolute",
+        bottom: 10,
+        left: 0,
+      };
+    }
   };
   render() {
     return (

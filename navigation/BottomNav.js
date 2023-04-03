@@ -136,7 +136,7 @@ class BottomNav extends React.Component {
                   />
                   <Text
                     style={{
-                      tintColor: focused ? "#6A4CE5" : "#748c94",
+                      // tintColor: focused ? "#6A4CE5" : "#748c94",
                       fontSize: 12,
                     }}
                   >
@@ -171,7 +171,7 @@ class BottomNav extends React.Component {
                   />
                   <Text
                     style={{
-                      tintColor: focused ? "#6A4CE5" : "#748c94",
+                      // tintColor: focused ? "#6A4CE5" : "#748c94",
                       fontSize: 12,
                     }}
                   >

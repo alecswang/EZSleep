@@ -4,13 +4,15 @@ import { View, Text, StyleSheet, Image } from "react-native";
 class Graph extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     if(props.startTime == null || props.endTime == null){
       // console.log(this.props.updateTime)
-      // console.log(this.props)
+      console.log(this.props)
       // props.updateTime();
       console.log("反悔啊web反悔哦恩爱吧v恶气")
     }
   }
+
 
   date = new Date().getDate();
   month = new Date().getMonth() + 1; //To get the Current Month
@@ -54,7 +56,12 @@ class Graph extends React.Component {
     console.log(this.props.endTime)
 
     console.log("this.time: " + this.time)
+    console.log("this.time type: " + typeof(this.time))
+    console.log("this.time type: " + typeof(parseInt(this.time)))
     console.log("time: " + time)
+    if(typeof(this.time) != "number"){
+      console.log("holy fucking shit ")
+    }
     return {
       width: 6,
       height: 40,
@@ -77,7 +84,7 @@ class Graph extends React.Component {
           <View style={this.displayTime(this.props.endTime)} />
           {/* Current time */}
           <View
-            style={[this.displayTime(), { backgroundColor: "white", width: 3 }]}
+            style={[this.displayTime(null), { backgroundColor: "white", width: 3 }]}
           />
         </View>
         {/* Bottom time */}

@@ -28,15 +28,16 @@ if (auth.currentUser) {
 }
 
 //for date
-let fullDate = new Date(Date.now());
-let pstDate = fullDate.toLocaleString("en-US", {
-  timeZone: "America/Los_Angeles",
-});
-pstDate = new Date(pstDate);
+// let fullDate = new Date(Date.now());
+// let pstDate = fullDate.toLocaleString("en-US", {
+//   timeZone: "America/Los_Angeles",
+// });
+let pstDate = new Date(Date.now());
 let year = pstDate.getFullYear();
 let month = pstDate.getMonth() + 1;
 let day = pstDate.getDate();
 let currentDay = [year] + [month] + [day];
+console.log(currentDay)
 
 //code below are for changing dates and updating the form accordingly
 let databaseDay = ref(database, [userID] + "/currentDay");
@@ -48,7 +49,8 @@ onValue(databaseDay, (snapshot) => {
   }
   //firebase set dayData
   const updates = {};
-  updates[[userID] + "/currentDay"] = day;
+  console.log("day" + currentDay)
+  updates[[userID] + "/currentDay"] = currentDay;
   update(ref(database), updates);
 });
 
@@ -57,26 +59,26 @@ function newDay() {
   //firebase
   const updates = {};
   // for every event
-  updates[[userID] + "/" + currentDay] = "";
+  updates[[userID] + "/" + currentDay] = {sleepStartTime: 0, sleepEndTime: 0};
   update(ref(database), updates);
 }
 
-let goalST = ref(database, userID + "/goalStartTime");
-onValue(goalST, async (snapshot) => {
-  goalST = await snapshot.val();
-});
-let goalET = ref(database, userID + "/goalEndTime");
-onValue(goalET, async (snapshot) => {
-  goalET = await snapshot.val();
-});
-let sleepST = ref(database, userID + "/" + currentDay + "/sleepStartTime");
-onValue(sleepST, async (snapshot) => {
-  sleepST = await snapshot.val();
-});
-let sleepET = ref(database, userID + "/" + currentDay + "/sleepEndTime");
-onValue(sleepET, async (snapshot) => {
-  sleepET = await snapshot.val();
-});
+// let goalST = ref(database, userID + "/goalStartTime");
+// onValue(goalST, async (snapshot) => {
+//   goalST = await snapshot.val();
+// });
+// let goalET = ref(database, userID + "/goalEndTime");
+// onValue(goalET, async (snapshot) => {
+//   goalET = await snapshot.val();
+// });
+// let sleepST = ref(database, userID + "/" + currentDay + "/sleepStartTime");
+// onValue(sleepST, async (snapshot) => {
+//   sleepST = await snapshot.val();
+// });
+// let sleepET = ref(database, userID + "/" + currentDay + "/sleepEndTime");
+// onValue(sleepET, async (snapshot) => {
+//   sleepET = await snapshot.val();
+// });
 
 //Index/Main Page
 class IndexScreen extends React.Component {
@@ -85,7 +87,7 @@ class IndexScreen extends React.Component {
   sleepST = null;
   sleepET = null;
   userID = null;
-   getUser() {
+   initialize() {
     if (auth.currentUser) {
       this.userID = auth.currentUser.uid;
       while (this.userID == null) {
@@ -133,13 +135,13 @@ class IndexScreen extends React.Component {
     // console.log(this.goalST)
 
     //update state
-    this.state = {
-      goalStartTime: this.goalST,
-      goalEndTime: this.goalET,
-      sleepStartTime: this.sleepST,
-      sleepEndTime: this.sleepET,
-      userID: this.userID,
-    };
+    // this.state = {
+    //   goalStartTime: this.goalST,
+    //   goalEndTime: this.goalET,
+    //   sleepStartTime: this.sleepST,
+    //   sleepEndTime: this.sleepET,
+    //   userID: this.userID,
+    // };
   }
   state = { currentUser: null };
   componentDidMount() {
@@ -148,7 +150,7 @@ class IndexScreen extends React.Component {
   }
   constructor(props) {
     super(props);
-    this.getUser();
+    this.initialize();
     //To get the Current Date
     // var date = new Date().getDate();
     this.state = {
@@ -157,6 +159,7 @@ class IndexScreen extends React.Component {
       sleepStartTime: this.sleepST,
       sleepEndTime: this.sleepET,
       userID: this.userID,
+      currentDay: currentDay,
     };
     console.log("id" + this.userID);
     console.log("here" + this.goalST);
@@ -180,11 +183,11 @@ class IndexScreen extends React.Component {
     onValue(goalET, (snapshot) => {
       goalET = snapshot.val();
     });
-    let sleepST = ref(database, userID + "/" + currentDay + "/sleepStartTime");
+    let sleepST = ref(database, userID + "/" + this.currentDay + "/sleepStartTime");
     onValue(sleepST, (snapshot) => {
       sleepST = snapshot.val();
     });
-    let sleepET = ref(database, userID + "/" + currentDay + "/sleepEndTime");
+    let sleepET = ref(database, userID + "/" + this.currentDay + "/sleepEndTime");
     onValue(sleepET, (snapshot) => {
       sleepET = snapshot.val();
     });
@@ -204,7 +207,12 @@ class IndexScreen extends React.Component {
     console.log("dsfagw " + this.state.sleepStartTime);
   };
 
-  showPreviousDay = () => {};
+  showPreviousDay = () => {
+    //need to add convert currentday funciton
+    //need to fix left NaN
+    this.setState({currentDay: [year] +""+ [month] + [day-1]});
+    // this.updateTime();
+  };
 
   showNextDay = () => {};
 
@@ -220,6 +228,7 @@ class IndexScreen extends React.Component {
       sleepStartTime,
       sleepEndTime,
       userID,
+      currentDay,
     } = this.state;
     return (
       <View
@@ -231,6 +240,7 @@ class IndexScreen extends React.Component {
         <Header
           showPreviousDay={this.showPreviousDay}
           showNextDay={this.showNextDay}
+          currentDay={currentDay}
         ></Header>
         {/* sun moon sun indicator */}
         <View style={styles.indicatorContainer}>

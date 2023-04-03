@@ -24,7 +24,7 @@ class Header extends React.Component {
         </Pressable>
         {/* Display date */}
         <Text style={styles.date}>
-          {this.month + "/" + this.date + "/" + this.year}
+          {this.props.currentDay}
         </Text>
         {/* dropdown arrow to change view */}
         <Pressable style={styles.changeView}>

@@ -12,13 +12,25 @@ import LearnScreen from "../screens/Learn";
 
 import { auth, database } from "../utilities/firebase";
 import { update, ref, onValue, get, child } from "firebase/database";
-let userID;
+//get user ID
+let userID = null;
 if (auth.currentUser) {
   userID = auth.currentUser.uid;
 }
-let userName = ref(database, userID + "/userName");
-onValue(userName, async (snapshot) => {
-  userName = await snapshot.val();
+auth.onAuthStateChanged(function (currentUser) {
+  if (currentUser) {
+    userID = auth.currentUser.uid;
+    // User is signed in.
+  } else {
+    console.log("no user signed in");
+    // No user is signed in.
+  }
+});
+
+const userNameRef = ref(database, userID + "/userName");
+let userName = null;
+onValue(userNameRef, (snapshot) => {
+  userName = snapshot.val();
 });
 
 //for navigation
@@ -30,6 +42,8 @@ class BottomNav extends React.Component {
     super(props);
     this.state = {
       lightModeEnabled: false,
+      melatoninEnabled: false,
+      caffineEnabled: false,
     };
   }
 
@@ -45,8 +59,21 @@ class BottomNav extends React.Component {
     });
   };
 
+  updateItem = (itemName) => {
+    //update item
+    itemName += "Enabled";
+    this.setState({ [itemName]: !this.state[itemName] }, () => {
+      console.log(itemName + this.state[itemName]);
+      const updates = {};
+      updates[[userID] + "/" + itemName] = this.state[itemName]
+        ? "true"
+        : "false";
+      update(ref(database), updates);
+    });
+  };
+
   render() {
-    const { lightModeEnabled } = this.state;
+    const { lightModeEnabled, melatoninEnabled, caffineEnabled } = this.state;
     return (
       // <Stack.Navigator>
       //   screenOptions={{
@@ -83,7 +110,12 @@ class BottomNav extends React.Component {
         >
           <Tab.Screen
             name="Index"
-            children={() => <IndexScreen lightModeEnabled={lightModeEnabled} />}
+            children={() => (
+              <IndexScreen
+                lightModeEnabled={lightModeEnabled}
+                userID={userID}
+              />
+            )}
             options={{
               tabBarIcon: ({ focused }) => (
                 <View
@@ -151,9 +183,7 @@ class BottomNav extends React.Component {
           />
           <Tab.Screen
             name="Learn"
-            children={() => (
-              <LearnScreen lightModeEnabled={lightModeEnabled} />
-            )}
+            children={() => <LearnScreen lightModeEnabled={lightModeEnabled} />}
             options={{
               tabBarIcon: ({ focused }) => (
                 <View
@@ -189,7 +219,10 @@ class BottomNav extends React.Component {
             children={() => (
               <ProfileScreen
                 updateTheme={this.updateTheme}
+                updateItem={this.updateItem}
                 lightModeEnabled={lightModeEnabled}
+                melatoninEnabled={melatoninEnabled}
+                caffineEnabled={caffineEnabled}
                 userName={userName}
               />
             )}

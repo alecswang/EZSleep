@@ -10,7 +10,6 @@ import {
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import circadianCycles from "../articles/circadianCycles";
 
 import { auth, database } from "../utilities/firebase";
 let uID;

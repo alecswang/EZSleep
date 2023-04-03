@@ -21,9 +21,6 @@ class ChangeTimeFramePopup extends React.Component {
       startTime: this.props.startTime,
       endTime: this.props.endTime,
     };
-    console.log(this.props)
-    console.log("startTime" + this.state.startTime)
-    console.log("endTime" + this.state.endTime)
   }
 
   convertToRegular(time) {
@@ -38,6 +35,10 @@ class ChangeTimeFramePopup extends React.Component {
   
     let suffix = time >= 12 ? "pm" : "am";
   
+    console.log("bp" + this.state.startTime)
+    console.log("bp" + this.state.endTime)
+    console.log("bp" + time)
+    console.log("display" + hour)
     return hour + ":" + (minute < 10 ? "0" : "") + minute + suffix;
   }
 
@@ -229,9 +230,9 @@ class ChangeTimeFramePopup extends React.Component {
                   console.log(this.props)
                   const updates = {};
                   if( this.props.reference == "goal"){
-                    updates[[this.props.uID] + "/" + this.props.reference + "StartTime"] =
+                    updates[[this.props.uID] + "/" + this.props.reference + "/StartTime"] =
                     startTime;
-                    updates[[this.props.uID] + "/" + this.props.reference + "EndTime"] = endTime;
+                    updates[[this.props.uID] + "/" + this.props.reference + "/EndTime"] = endTime;
                   }else{
                     updates[[this.props.uID] + "/" + this.props.currentDay + "/" + this.props.reference + "StartTime"] =
                      startTime;

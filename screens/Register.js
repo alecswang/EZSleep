@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import firebase from "firebase/compat/app";
-import { firestore, auth } from "./firebase";
+import { firestore, auth } from "../utilities/firebase";
 import { AsyncStorage } from "react-native";
 
 //Profile Page

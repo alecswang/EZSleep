@@ -120,22 +120,6 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // color: "#fff",
   },
-  //Back Button
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#654CE0",
-    position: "absolute",
-    top: 70,
-    right: 20,
-  },
-  //Images
-  backImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
   canvasLayout: {
     justifyContent: "center",
     alignItems: "center",

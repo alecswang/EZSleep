@@ -86,6 +86,7 @@ const ProfileScreen = (props) => {
       <View style={[styles.scrollViewContainer]}>
       <ScrollView contentContainerStyle={styles.scrollInnerContainer}>
         
+        {/* title */}
       <View style={styles.title}>
         <Animated.Text style={[styles.text, textAnimation]}>
           PROFILE
@@ -137,6 +138,14 @@ const ProfileScreen = (props) => {
           <Animated.Text style={[styles.optionText, textAnimation]}>
             Melatonin
           </Animated.Text>
+          <Switch
+            value={props.melatoninEnabled}
+            onValueChange={() => props.updateItem("melatonin")}
+            trackColor={SWITCH_TRACK_COLOR}
+            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+            ios_backgroundColor="#3e3e3e"
+            style={styles.switch}
+          />
         </View>
         {/* dividing line */}
         <View
@@ -151,7 +160,14 @@ const ProfileScreen = (props) => {
           <Animated.Text style={[styles.optionText, textAnimation]}>
             Caffine
           </Animated.Text>
-          {/* need to switch to react-time-picker */}
+          <Switch
+            value={props.caffineEnabled}
+            onValueChange={() => props.updateItem("caffine")}
+            trackColor={SWITCH_TRACK_COLOR}
+            // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
+            ios_backgroundColor="#3e3e3e"
+            style={styles.switch}
+          />
         </View>
         {/* dividing line */}
         <View

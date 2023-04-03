@@ -7,12 +7,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { firestore, auth } from "./screens/firebase";
+import { firestore, auth } from "./utilities/firebase";
 
 import LoadingScreen from "./screens/Loading";
 import LoginScreen from "./screens/Login";
 import RegisterScreen from "./screens/Register";
-import circadianCycles from "./articles/circadianCycles";
+import CircadianCyclesScreen from "./articles/CircadianCycles.js";
 
 const Stack = createStackNavigator();
 
@@ -46,7 +46,7 @@ class App extends React.Component {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Register" component={RegisterScreen} />
               <Stack.Screen name="Home" component={BottomNav} />
-              <Stack.Screen name="circadianCycles" component={circadianCycles} />
+              <Stack.Screen name="circadianCycles" component={CircadianCyclesScreen} />
             </Stack.Navigator>
             {/* <BottomNav></BottomNav> */}
           </NavigationContainer>

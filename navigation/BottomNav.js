@@ -10,6 +10,8 @@ import SupportScreen from "../screens/Support";
 import LoadingScreen from "../screens/Loading";
 import LearnScreen from "../screens/Learn";
 
+import { Themes } from "../utilities/Themes";
+
 import { auth, database } from "../utilities/firebase";
 import { update, ref, onValue, get, child } from "firebase/database";
 //get user ID
@@ -41,23 +43,25 @@ class BottomNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lightModeEnabled: false,
+      lightModeEnabled: this.props.lightModeEnabled,
       melatoninEnabled: false,
       caffineEnabled: false,
     };
+    console.log("BottomNavakrfopafeop")
+    console.log(props)
   }
 
-  updateTheme = () => {
-    //update theme
-    this.setState({ lightModeEnabled: !this.state.lightModeEnabled }, () => {
-      console.log("lightEnabled: " + this.state.lightModeEnabled);
-      const updates = {};
-      updates[[userID] + "/theme"] = this.state.lightModeEnabled
-        ? "light"
-        : "dark";
-      update(ref(database), updates);
-    });
-  };
+  // updateTheme = () => {
+  //   //update theme
+  //   this.setState({ lightModeEnabled: !this.state.lightModeEnabled }, () => {
+  //     console.log("lightEnabled: " + this.state.lightModeEnabled);
+  //     const updates = {};
+  //     updates[[userID] + "/theme"] = this.state.lightModeEnabled
+  //       ? "light"
+  //       : "dark";
+  //     update(ref(database), updates);
+  //   });
+  // };
 
   updateItem = (itemName) => {
     //update item
@@ -72,39 +76,55 @@ class BottomNav extends React.Component {
     });
   };
 
+  setTheme() {
+    if (this.state.lightModeEnabled) {
+      return {
+        tabBarStyle: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          backgroundColor: "#6A4CE5",
+          // borderBottomLeftRadius: 0,
+          // borderBottomRightRadius: 0,
+          // borderTopLeftRadius: 20,
+          // borderTopRightRadius: 20,
+          borderTopWidth: 0,
+          height: 60,
+          ...styles.shadow,
+        },
+      };
+    } else {
+      return {
+        tabBarStyle: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          backgroundColor: "#181A4F",
+          // borderBottomLeftRadius: 0,
+          // borderBottomRightRadius: 0,
+          // borderTopLeftRadius: 20,
+          // borderTopRightRadius: 20,
+          borderTopWidth: 0,
+          height: 60,
+          ...styles.shadow,
+        },
+      };
+    }
+  }
+
   render() {
     const { lightModeEnabled, melatoninEnabled, caffineEnabled } = this.state;
     return (
-      // <Stack.Navigator>
-      //   screenOptions={{
-      //     headerShown: false,
-      //   }}
-      //   initialRouteName="Loading"
-      // >
-      //   <Stack.Screen name="Index" component={IndexScreen} />
-      //   <Stack.Screen name="Profile" component={ProfileScreen} />
-      //   <Stack.Screen name="Login" component={LoginScreen} />
-      //   <Stack.Screen name="Register" component={RegisterScreen} />
-      //   <Stack.Screen name="Loading" component={LoadingScreen} />
-      //   <Stack.Screen name="Gamify" component={GamifyScreen} />
-      //   <Stack.Screen name="Support" component={SupportScreen} />
-      // </Stack.Navigator>
       <>
         <Tab.Navigator
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
-            tabBarStyle: {
-              position: "absolute",
-              bottom: 20,
-              left: 20,
-              right: 20,
-              elevation: 0,
-              backgroundColor: "#ffffff",
-              borderRadius: 15,
-              height: 90,
-              ...styles.shadow,
-            },
+            ...this.setTheme(),
           }}
           initialRouteName="Loading"
         >
@@ -118,13 +138,7 @@ class BottomNav extends React.Component {
             )}
             options={{
               tabBarIcon: ({ focused }) => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    top: 3,
-                  }}
-                >
+                <View style={styles.container}>
                   <Image
                     source={require("../assets/graph.png")}
                     resizeMode="contain"
@@ -135,10 +149,13 @@ class BottomNav extends React.Component {
                     }}
                   />
                   <Text
-                    style={{
-                      // tintColor: focused ? "#6A4CE5" : "#748c94",
-                      fontSize: 12,
-                    }}
+                    style={[
+                      {
+                        // tintColor: focused ? "#6A4CE5" : "#748c94",
+                        fontSize: 12,
+                      },
+                      lightModeEnabled ? Themes.light : Themes.dark,
+                    ]}
                   >
                     HOME
                   </Text>
@@ -153,13 +170,7 @@ class BottomNav extends React.Component {
             )}
             options={{
               tabBarIcon: ({ focused }) => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    top: 3,
-                  }}
-                >
+                <View style={styles.container}>
                   <Image
                     source={require("../assets/gamify.png")}
                     resizeMode="contain"
@@ -170,10 +181,13 @@ class BottomNav extends React.Component {
                     }}
                   />
                   <Text
-                    style={{
-                      // tintColor: focused ? "#6A4CE5" : "#748c94",
-                      fontSize: 12,
-                    }}
+                    style={[
+                      {
+                        // tintColor: focused ? "#6A4CE5" : "#748c94",
+                        fontSize: 12,
+                      },
+                      lightModeEnabled ? Themes.light : Themes.dark,
+                    ]}
                   >
                     GAME
                   </Text>
@@ -186,13 +200,7 @@ class BottomNav extends React.Component {
             children={() => <LearnScreen lightModeEnabled={lightModeEnabled} />}
             options={{
               tabBarIcon: ({ focused }) => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    top: 3,
-                  }}
-                >
+                <View style={styles.container}>
                   <Image
                     source={require("../assets/light-bulb.png")}
                     resizeMode="contain"
@@ -203,10 +211,13 @@ class BottomNav extends React.Component {
                     }}
                   />
                   <Text
-                    style={{
-                      tintColor: focused ? "#6A4CE5" : "#748c94",
-                      fontSize: 12,
-                    }}
+                    style={[
+                      {
+                        // tintColor: focused ? "#6A4CE5" : "#748c94",
+                        fontSize: 12,
+                      },
+                      lightModeEnabled ? Themes.light : Themes.dark,
+                    ]}
                   >
                     Learn
                   </Text>
@@ -218,7 +229,7 @@ class BottomNav extends React.Component {
             name={"Profile"}
             children={() => (
               <ProfileScreen
-                updateTheme={this.updateTheme}
+                updateTheme={this.props.updateTheme}
                 updateItem={this.updateItem}
                 lightModeEnabled={lightModeEnabled}
                 melatoninEnabled={melatoninEnabled}
@@ -228,13 +239,7 @@ class BottomNav extends React.Component {
             )}
             options={{
               tabBarIcon: ({ focused }) => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    top: 3,
-                  }}
-                >
+                <View style={styles.container}>
                   <Image
                     source={require("../assets/profile.png")}
                     resizeMode="contain"
@@ -245,10 +250,13 @@ class BottomNav extends React.Component {
                     }}
                   />
                   <Text
-                    style={{
-                      tintColor: focused ? "#6A4CE5" : "#748c94",
-                      fontSize: 12,
-                    }}
+                    style={[
+                      {
+                        // tintColor: focused ? "#6A4CE5" : "#748c94",
+                        fontSize: 12,
+                      },
+                      lightModeEnabled ? Themes.light : Themes.dark,
+                    ]}
                   >
                     PROFILE
                   </Text>
@@ -272,6 +280,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.5,
     elevation: 5,
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    top: 3,
   },
 });
 

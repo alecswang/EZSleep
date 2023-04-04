@@ -89,7 +89,10 @@ const GamifyScreen = (props) => {
         <Text style={styles.title}>Hello</Text>
       </View>
       <Canvas
-        style={styles.canvasLayout}
+        style={[
+          styles.canvasLayout,
+          props.lightModeEnabled ? Themes.light : Themes.dark,
+        ]}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >

@@ -25,6 +25,9 @@ import Animated, {
 //   onValue,
 //   update,
 // } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+
+import { Themes } from "../utilities/Themes";
+
 import { auth, database } from "../utilities/firebase";
 import { update, ref } from "firebase/database";
 let uID;
@@ -48,10 +51,13 @@ const ProfileScreen = (props) => {
   });
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
+    console.log("gfasfasfwgea")
+    console.log(props)
+
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
-      [Colors.dark.background, Colors.light.background]
+      [Themes.dark.backgroundColor, Themes.light.backgroundColor]
     );
     return {
       backgroundColor,
@@ -62,7 +68,7 @@ const ProfileScreen = (props) => {
     const color = interpolateColor(
       progress.value,
       [0, 1],
-      [Colors.dark.text, Colors.light.text]
+      [Themes.dark.color, Themes.light.color]
     );
     return {
       color,

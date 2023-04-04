@@ -54,7 +54,7 @@ const LearnScreen = (props) => {
         LEARN
       </Text>
       <TouchableOpacity
-        style={styles.articleContainer}
+        style={[styles.articleContainer, props.lightModeEnabled ? Themes.light : Themes.dark]}
         onPress={() => handlePress("circadianCycles")}
       >
         <Image
@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
   },
   //article containers
   articleContainer: {
-    width: "100%",
+    width: "101%",
     height: 120,
     borderColor: "black",
-    borderWidth: 2,
+    borderWidth: 1,
 
     flexDirection: "row",
     flexWrap: "wrap",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useState} from "react";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,6 +10,7 @@ import SupportScreen from "../screens/Support";
 import LoadingScreen from "../screens/Loading";
 import LearnScreen from "../screens/Learn";
 
+import { ThemeContext } from "../utilities/ThemeContext";
 import { Themes } from "../utilities/Themes";
 
 import { auth, database } from "../utilities/firebase";
@@ -39,17 +40,15 @@ onValue(userNameRef, (snapshot) => {
 const Tab = createBottomTabNavigator();
 
 //Entry Point
-class BottomNav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lightModeEnabled: this.props.lightModeEnabled,
-      melatoninEnabled: false,
-      caffineEnabled: false,
-    };
-    console.log("BottomNavakrfopafeop")
-    console.log(props)
-  }
+const BottomNav = (props) => {
+  const {theme} = useContext(ThemeContext);
+  const {melatoninEnabled} = useState(false);
+  const {caffineEnabled} = useState(false);
+  console.log("主题")
+  console.log(theme)
+    // console.log("BottomNav Trust me")
+    // console.log(this.props.route.params)
+    // console.log(this.props.route.params.lightModeEnabled)
 
   // updateTheme = () => {
   //   //update theme
@@ -76,55 +75,28 @@ class BottomNav extends React.Component {
     });
   };
 
-  setTheme() {
-    if (this.state.lightModeEnabled) {
-      return {
-        tabBarStyle: {
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          elevation: 0,
-          backgroundColor: "#6A4CE5",
-          // borderBottomLeftRadius: 0,
-          // borderBottomRightRadius: 0,
-          // borderTopLeftRadius: 20,
-          // borderTopRightRadius: 20,
-          borderTopWidth: 0,
-          height: 60,
-          ...styles.shadow,
-        },
-      };
-    } else {
-      return {
-        tabBarStyle: {
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          elevation: 0,
-          backgroundColor: "#181A4F",
-          // borderBottomLeftRadius: 0,
-          // borderBottomRightRadius: 0,
-          // borderTopLeftRadius: 20,
-          // borderTopRightRadius: 20,
-          borderTopWidth: 0,
-          height: 60,
-          ...styles.shadow,
-        },
-      };
-    }
-  }
-
-  render() {
-    const { lightModeEnabled, melatoninEnabled, caffineEnabled } = this.state;
     return (
       <>
         <Tab.Navigator
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
-            ...this.setTheme(),
+            tabBarStyle: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              elevation: 0,
+              backgroundColor: "#181A4F",
+              // borderBottomLeftRadius: 0,
+              // borderBottomRightRadius: 0,
+              // borderTopLeftRadius: 20,
+              // borderTopRightRadius: 20,
+              borderTopWidth: 0,
+              height: 60,
+              ...styles.shadow,
+              ...Themes[theme],
+            },
           }}
           initialRouteName="Loading"
         >
@@ -132,7 +104,7 @@ class BottomNav extends React.Component {
             name="Index"
             children={() => (
               <IndexScreen
-                lightModeEnabled={lightModeEnabled}
+                theme={theme}
                 userID={userID}
               />
             )}
@@ -154,7 +126,7 @@ class BottomNav extends React.Component {
                         // tintColor: focused ? "#6A4CE5" : "#748c94",
                         fontSize: 12,
                       },
-                      lightModeEnabled ? Themes.light : Themes.dark,
+                      Themes[theme],
                     ]}
                   >
                     HOME
@@ -166,7 +138,7 @@ class BottomNav extends React.Component {
           <Tab.Screen
             name="Gamify"
             children={() => (
-              <GamifyScreen lightModeEnabled={lightModeEnabled} />
+              <GamifyScreen theme={theme} />
             )}
             options={{
               tabBarIcon: ({ focused }) => (
@@ -186,7 +158,7 @@ class BottomNav extends React.Component {
                         // tintColor: focused ? "#6A4CE5" : "#748c94",
                         fontSize: 12,
                       },
-                      lightModeEnabled ? Themes.light : Themes.dark,
+                      Themes[theme],
                     ]}
                   >
                     GAME
@@ -197,7 +169,7 @@ class BottomNav extends React.Component {
           />
           <Tab.Screen
             name="Learn"
-            children={() => <LearnScreen lightModeEnabled={lightModeEnabled} />}
+            children={() => <LearnScreen theme={theme} />}
             options={{
               tabBarIcon: ({ focused }) => (
                 <View style={styles.container}>
@@ -216,7 +188,7 @@ class BottomNav extends React.Component {
                         // tintColor: focused ? "#6A4CE5" : "#748c94",
                         fontSize: 12,
                       },
-                      lightModeEnabled ? Themes.light : Themes.dark,
+                      Themes[theme],
                     ]}
                   >
                     Learn
@@ -229,9 +201,9 @@ class BottomNav extends React.Component {
             name={"Profile"}
             children={() => (
               <ProfileScreen
-                updateTheme={this.props.updateTheme}
-                updateItem={this.updateItem}
-                lightModeEnabled={lightModeEnabled}
+                // updateTheme={updateTheme}
+                updateItem={updateItem}
+                theme={theme}
                 melatoninEnabled={melatoninEnabled}
                 caffineEnabled={caffineEnabled}
                 userName={userName}
@@ -255,7 +227,7 @@ class BottomNav extends React.Component {
                         // tintColor: focused ? "#6A4CE5" : "#748c94",
                         fontSize: 12,
                       },
-                      lightModeEnabled ? Themes.light : Themes.dark,
+                      Themes[theme],
                     ]}
                   >
                     PROFILE
@@ -267,7 +239,6 @@ class BottomNav extends React.Component {
         </Tab.Navigator>
       </>
     );
-  }
 }
 
 const styles = StyleSheet.create({

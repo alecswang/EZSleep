@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {
   Image,
   Pressable,
@@ -15,6 +15,7 @@ import ChangeTimeFramePopup from "../components/ChangeTimeFramePopup";
 import firebase from "firebase/compat/app";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { ThemeContext } from "../utilities/ThemeContext";
 import { Themes } from "../utilities/Themes";
 
 import { auth, database } from "../utilities/firebase";
@@ -81,187 +82,116 @@ function newDay() {
 // });
 
 //Index/Main Page
-class IndexScreen extends React.Component {
-  goalST = null;
-  goalET = null;
-  sleepST = null;
-  sleepET = null;
-  userID = null;
-  initialize() {
-    if (auth.currentUser) {
-      this.userID = auth.currentUser.uid;
-      while (this.userID == null) {
-        this.userID = auth.currentUser.uid;
-        console.log("hi" + this.userID);
+const IndexScreen = () => {
+  const [goalST, setGoalST] = useState(null);
+  const [goalET, setGoalET] = useState(null);
+  const [sleepST, setSleepST] = useState(null);
+  const [sleepET, setSleepET] = useState(null);
+  const [userID, setUserID] = useState(null);
+  const [currentDay, setCurrentDay] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const {theme} = useContext(ThemeContext);
+
+  const initialize = () => {
+    if (firebase.auth().currentUser) {
+      let userID = firebase.auth().currentUser.uid;
+      setUserID(userID);
+      while (userID == null) {
+        userID = firebase.auth().currentUser.uid;
+        console.log("hi" + userID);
       }
     }
 
-    let goalSTRef = ref(database, this.userID + "/goalStartTime");
-    // get(ref(database), this.userID + "/goalStartTime").then((snapshot) => {
-    //   if (snapshot.exists()) {
-    //     this.goalST = snapshot.val();
-    //     console.log(snapshot.val());
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    //   console.log("Just to show");
-    // }).catch((error) => {
-    //   console.error(error);
-    //   console.log(error);
-    // });
-    onValue(
-      goalSTRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          this.goalST = snapshot.val();
-          console.log("start" + this.goalST);
-        } else {
-          console.log("No data available");
-        }
-      },
-      (error) => {
-        console.error("huh" + error);
-      }
-    );
-    let goalETRef = ref(database, this.userID + "/goalEndTime");
-    onValue(goalETRef, (snapshot) => {
-      const data = snapshot.val();
-      this.goalET = data;
-    });
-    let sleepSTRef = ref(
-      database,
-      this.userID + "/" + currentDay + "/sleepStartTime"
-    );
-    onValue(sleepSTRef, (snapshot) => {
-      this.sleepST = snapshot.val();
-    });
-    let sleepETRef = ref(
-      database,
-      this.userID + "/" + currentDay + "/sleepEndTime"
-    );
-    onValue(sleepETRef, (snapshot) => {
-      this.sleepET = snapshot.val();
-    });
-    // console.log(this.goalST)
-
-    //update state
-    // this.state = {
-    //   goalStartTime: this.goalST,
-    //   goalEndTime: this.goalET,
-    //   sleepStartTime: this.sleepST,
-    //   sleepEndTime: this.sleepET,
-    //   userID: this.userID,
-    // };
-  }
-  state = { currentUser: null };
-  componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
-  constructor(props) {
-    super(props);
-    this.initialize();
-    //To get the Current Date
-    // var date = new Date().getDate();
-    this.state = {
-      goalStartTime: this.goalST,
-      goalEndTime: this.goalET,
-      sleepStartTime: this.sleepST,
-      sleepEndTime: this.sleepET,
-      userID: this.userID,
-      currentDay: currentDay,
-    };
-    console.log("id" + this.userID);
-    console.log("here" + this.goalST);
-    console.log("here" + this.goalET);
-    console.log("here" + this.sleepST);
-    console.log("here" + this.sleepET);
-  }
-
-  // currentTimeDisplay = () => {
-  //   styles.currentTime.left = 100;
-  // }
-
-  updateTime = () => {
-    let goalSTRef = ref(database, this.userID + "/goalStartTime");
+    const goalSTRef = ref(database, userID + "/goalStartTime");
     onValue(goalSTRef, (snapshot) => {
-      const data = snapshot.val();
-      this.goalST = data;
+      setGoalST(snapshot.val());
     });
-    let goalETRef = ref(database, this.userID + "/goalEndTime");
+    const goalETRef = ref(database, userID + "/goalEndTime");
     onValue(goalETRef, (snapshot) => {
-      const data = snapshot.val();
-      this.goalET = data;
+      setGoalET(snapshot.val());
     });
-    let sleepSTRef = ref(
-      database,
-      this.userID + "/" + currentDay + "/sleepStartTime"
-    );
+    const sleepSTRef = ref(database, userID + "/" + currentDay + "/sleepStartTime");
     onValue(sleepSTRef, (snapshot) => {
-      this.sleepST = snapshot.val();
+      setSleepST(snapshot.val());
     });
-    let sleepETRef = ref(
-      database,
-      this.userID + "/" + currentDay + "/sleepEndTime"
-    );
+    const sleepETRef = ref(database, userID + "/" + currentDay + "/sleepEndTime");
     onValue(sleepETRef, (snapshot) => {
-      this.sleepET = snapshot.val();
+      setSleepET(snapshot.val());
     });
 
-    //update state
-    this.setState({ goalStartTime: this.goalST });
-    this.setState({ goalEndTime: this.goalET });
-    this.setState({ sleepStartTime: this.sleepST });
-    this.setState({ sleepEndTime: this.sleepET });
-    console.log(this.goalST);
-    console.log(this.goalET);
-    console.log(this.state.goalStartTime);
-    console.log(this.state.goalEndTime);
-    console.log(this.state.sleepStartTime);
-    console.log(this.state.sleepEndTime);
-
-    console.log("updating time " + this.state.sleepStartTime);
-
-    pstDate = new Date(Date.now());
-    year = pstDate.getFullYear();
-    month = pstDate.getMonth() + 1;
-    day = pstDate.getDate();
-    currentDay = [year] + [month] + [day];
+    console.log(goalST);
+    console.log(goalET);
+    console.log(sleepST);
+    console.log(sleepET);
   };
 
-  showPreviousDay = () => {
+  useEffect(() => {
+    const { currentUser } = firebase.auth();
+    setCurrentUser(currentUser);
+    initialize();
+  }, []);
+
+  const updateTime = () => {
+    const goalSTRef = ref(database, userID + "/goalStartTime");
+    onValue(goalSTRef, (snapshot) => {
+      setGoalST(snapshot.val());
+    });
+
+    const goalETRef = ref(database, userID + "/goalEndTime");
+    onValue(goalETRef, (snapshot) => {
+      setGoalET(snapshot.val());
+    });
+
+    const sleepSTRef = ref(database, userID + "/" + currentDay + "/sleepStartTime");
+    onValue(sleepSTRef, (snapshot) => {
+      setSleepST(snapshot.val());
+    });
+
+    const sleepETRef = ref(database, userID + "/" + currentDay + "/sleepEndTime");
+    onValue(sleepETRef, (snapshot) => {
+      setSleepET(snapshot.val());
+    });
+
+    console.log(goalST);
+    console.log(goalET);
+    console.log(sleepST);
+    console.log(sleepET);
+
+    console.log("updating time " + sleepST);
+
+    const pstDate = new Date(Date.now());
+    const year = pstDate.getFullYear();
+    const month = pstDate.getMonth() + 1;
+    const day = pstDate.getDate();
+    const currentDay = [year] + [month] + [day];
+    setCurrentDay(currentDay);
+  };
+
+  const showPreviousDay = () => {
     //need to add convert currentday funciton
     //need to fix left NaN
-    this.setState({ currentDay: [year] + "" + [month] + [day - 1] });
+    setCurrentDay({ currentDay: [year] + "" + [month] + [day - 1] });
     // this.updateTime();
   };
 
-  showNextDay = () => {};
+  const showNextDay = () => {};
 
   // handleTimeChange = (newST, newET) => {
   //   this.setState({ startTime: newST });
   //   this.setState({ endTime: newET });
   // }
 
-  render() {
-    const {
-      goalStartTime,
-      goalEndTime,
-      sleepStartTime,
-      sleepEndTime,
-      userID,
-      currentDay,
-    } = this.state;
+
     return (
       <View
         style={[
           styles.layout,
-          this.props.lightModeEnabled ? Themes.light : Themes.dark,
+          Themes[theme],
         ]}
       >
         <Header
-          showPreviousDay={this.showPreviousDay}
-          showNextDay={this.showNextDay}
+          showPreviousDay={showPreviousDay}
+          showNextDay={showNextDay}
           currentDay={currentDay}
         ></Header>
         {/* sun moon sun indicator */}
@@ -295,16 +225,16 @@ class IndexScreen extends React.Component {
         <Graph
           title="Sleep Goal"
           barColor="#3FDCFF"
-          updateTime={this.updateTime}
-          startTime={goalStartTime}
-          endTime={goalEndTime}
+          updateTime={updateTime}
+          startTime={goalST}
+          endTime={goalET}
         />
         <Graph
           title="Actual Sleep"
           barColor="#FEE45A"
-          updateTime={this.updateTime}
-          startTime={sleepStartTime}
-          endTime={sleepEndTime}
+          updateTime={updateTime}
+          startTime={sleepST}
+          endTime={sleepET}
         />
 
         <View
@@ -315,9 +245,9 @@ class IndexScreen extends React.Component {
           <ChangeTimeFramePopup
             title={"Sleep Goal"}
             style={styles.goalButton}
-            startTime={goalStartTime}
-            endTime={goalEndTime}
-            updateTime={this.updateTime}
+            startTime={goalST}
+            endTime={goalET}
+            updateTime={updateTime}
             currentDay={currentDay}
             uID={userID}
             reference={"goal"}
@@ -327,9 +257,9 @@ class IndexScreen extends React.Component {
           <ChangeTimeFramePopup
             title={"Sleep Time"}
             style={styles.timeButton}
-            startTime={sleepStartTime}
-            endTime={sleepEndTime}
-            updateTime={this.updateTime}
+            startTime={sleepST}
+            endTime={sleepET}
+            updateTime={updateTime}
             currentDay={currentDay}
             uID={userID}
             reference={"sleep"}
@@ -340,7 +270,6 @@ class IndexScreen extends React.Component {
         {/* <BottomNav nav={this.props} /> */}
       </View>
     );
-  }
 }
 
 export default IndexScreen;

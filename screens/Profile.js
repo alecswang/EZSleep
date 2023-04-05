@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Image, Pressable, StyleSheet, Text, View, Switch, ScrollView } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -27,6 +27,8 @@ import Animated, {
 // } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 
 import { Themes } from "../utilities/Themes";
+import { ThemeContext } from "../utilities/ThemeContext";
+
 
 import { auth, database } from "../utilities/firebase";
 import { update, ref } from "firebase/database";
@@ -40,14 +42,26 @@ const updates = {};
 updates[[uID] + "/theme"] = "dark";
 update(ref(database), updates);
 
-// class SettingScreen extends React.Component {
 const ProfileScreen = (props) => {
   // Back arrow button
   const nav = useNavigation();
+  const {theme, updateTheme } = useContext(ThemeContext);
+
+  const [isActive, setIsActive] = useState(theme == "light");
+
+  const handleThemeChange= (value) => {
+    updateTheme(value ? "light" : "dark", true)
+    setIsActive((previousState) => !previousState)
+  }
+
+  console.log("Profile")
+  console.log(theme)
 
   // general code used for animations
   const progress = useDerivedValue(() => {
-    return props.lightModeEnabled ? withTiming(1) : withTiming(0);
+    // return props.lightModeEnabled ? withTiming(1) : withTiming(0);
+    return withTiming(1);
+
   });
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
@@ -74,6 +88,10 @@ const ProfileScreen = (props) => {
       color,
     };
   });
+
+  // useEffect(() => {
+  //   console.log('Theme updated');
+  // }, [theme]);
 
   const SWITCH_TRACK_COLOR = {
     true: "#fff096",
@@ -123,8 +141,8 @@ const ProfileScreen = (props) => {
             Light mode
           </Animated.Text>
           <Switch
-            value={props.lightModeEnabled}
-            onValueChange={props.updateTheme}
+            value={isActive}
+            onValueChange={(value)=>handleThemeChange(value)}
             trackColor={SWITCH_TRACK_COLOR}
             // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
             ios_backgroundColor="#3e3e3e"
@@ -224,7 +242,7 @@ const ProfileScreen = (props) => {
   );
   // }
 };
-export default ProfileScreen;
+export default ProfileScreen; 
 
 // Colors for switching themes
 const Colors = {

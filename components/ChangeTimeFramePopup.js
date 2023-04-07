@@ -35,10 +35,10 @@ class ChangeTimeFramePopup extends React.Component {
   
     let suffix = time >= 12 ? "pm" : "am";
   
-    console.log("bp" + this.state.startTime)
-    console.log("bp" + this.state.endTime)
-    console.log("bp" + time)
-    console.log("display" + hour)
+    // console.log("bp" + this.state.startTime)
+    // console.log("bp" + this.state.endTime)
+    // console.log("bp" + time)
+    // console.log("display" + hour)
     return hour + ":" + (minute < 10 ? "0" : "") + minute + suffix;
   }
 

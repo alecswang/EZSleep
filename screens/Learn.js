@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   Image,
   Pressable,
@@ -18,6 +18,7 @@ if (auth.currentUser) {
 }
 import { update, ref, onValue } from "firebase/database";
 
+import { ThemeContext } from "../utilities/ThemeContext";
 import { Themes } from "../utilities/Themes";
 
 const Stack = createStackNavigator();
@@ -33,6 +34,7 @@ if (currentTheme) {
 //Learn Page
 const LearnScreen = (props) => {
   const nav = useNavigation();
+  const {theme} = useContext(ThemeContext);
 
   const handlePress = (pageName) => {
     nav.navigate(pageName);
@@ -42,19 +44,19 @@ const LearnScreen = (props) => {
     <View
       style={[
         styles.layout,
-        props.lightModeEnabled ? Themes.light : Themes.dark,
+        Themes[theme],
       ]}
     >
       <Text
         style={[
           styles.title,
-          props.lightModeEnabled ? Themes.light : Themes.dark,
+          Themes[theme],
         ]}
       >
         LEARN
       </Text>
       <TouchableOpacity
-        style={[styles.articleContainer, props.lightModeEnabled ? Themes.light : Themes.dark]}
+        style={[styles.articleContainer, Themes[theme],]}
         onPress={() => handlePress("circadianCycles")}
       >
         <Image
@@ -65,7 +67,7 @@ const LearnScreen = (props) => {
           <Text
             style={[
               styles.articleTitle,
-              props.lightModeEnabled ? Themes.light : Themes.dark,
+              Themes[theme],
             ]}
           >
             CircadianCycles
@@ -73,7 +75,7 @@ const LearnScreen = (props) => {
           <Text
             style={[
               styles.articleText,
-              props.lightModeEnabled ? Themes.light : Themes.dark,
+              Themes[theme],
             ]}
           >
             gahgvnapv h fapbva grwaup upiagh iparbguia gbaruibn vpabaebababaenba

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   Image,
   Pressable,
@@ -17,6 +17,7 @@ if (auth.currentUser) {
 }
 import { update, ref, onValue } from "firebase/database";
 
+import { ThemeContext } from "../utilities/ThemeContext";
 import { Themes } from "../utilities/Themes";
 
 let currentTheme = ref(database, uID + "/theme");
@@ -30,14 +31,15 @@ if (currentTheme) {
 //Learn Page
 const CircadianCycles = (props) => {
   const nav = useNavigation();
+  const {theme} = useContext(ThemeContext);
   return (
     <View style={[styles.scrollViewContainer]}>
       <ScrollView
         contentContainerStyle={styles.scrollInnerContainer}
-        style={[props.lightModeEnabled ? Themes.light : Themes.dark]}
+        style={[Themes[theme],]}
       >
         <Text style={styles.title}>Circadians Cycles</Text>
-        <Text style={styles.text}>
+        <Text style={[styles.text, Themes[theme],]}>
           What is Circadian Rhythm Sleep-Wake Disorder, Delayed Sleep Phase
           Type? Also known as Delayed Sleep Phase Syndrome, it is a disorder
           that involves the body's master clock. Most processes in the body such
@@ -220,6 +222,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    top: 160,
   },
   //Back Button
   backButton: {

@@ -59,15 +59,11 @@ const ProfileScreen = (props) => {
 
   // general code used for animations
   const progress = useDerivedValue(() => {
-    // return props.lightModeEnabled ? withTiming(1) : withTiming(0);
-    return withTiming(1);
-
+    return isActive ? withTiming(1) : withTiming(0);
   });
+  
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
-    console.log("gfasfasfwgea")
-    console.log(props)
-
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],

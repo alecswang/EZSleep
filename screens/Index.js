@@ -24,7 +24,7 @@ let userID = null;
 if (auth.currentUser) {
   while (userID == null) {
     userID = auth.currentUser.uid;
-    console.log("hiIndex" + userID);
+    // console.log("hiIndex" + userID);
   }
 }
 
@@ -38,7 +38,7 @@ let year = pstDate.getFullYear();
 let month = pstDate.getMonth() + 1;
 let day = pstDate.getDate();
 let currentDay = [year] + [month] + [day];
-console.log("currentDayt" + currentDay);
+// console.log("currentDayt" + currentDay);
 
 //code below are for changing dates and updating the form accordingly
 let databaseDay = ref(database, [userID] + "/currentDay");
@@ -98,7 +98,7 @@ const IndexScreen = () => {
       setUserID(userID);
       while (userID == null) {
         userID = firebase.auth().currentUser.uid;
-        console.log("hi" + userID);
+        // console.log("hi" + userID);
       }
     }
 
@@ -119,10 +119,10 @@ const IndexScreen = () => {
       setSleepET(snapshot.val());
     });
 
-    console.log(goalST);
-    console.log(goalET);
-    console.log(sleepST);
-    console.log(sleepET);
+    // console.log(goalST);
+    // console.log(goalET);
+    // console.log(sleepST);
+    // console.log(sleepET);
   };
 
   useEffect(() => {
@@ -152,12 +152,12 @@ const IndexScreen = () => {
       setSleepET(snapshot.val());
     });
 
-    console.log(goalST);
-    console.log(goalET);
-    console.log(sleepST);
-    console.log(sleepET);
+    // console.log(goalST);
+    // console.log(goalET);
+    // console.log(sleepST);
+    // console.log(sleepET);
 
-    console.log("updating time " + sleepST);
+    // console.log("updating time " + sleepST);
 
     const pstDate = new Date(Date.now());
     const year = pstDate.getFullYear();

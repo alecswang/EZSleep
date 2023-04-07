@@ -4,12 +4,12 @@ import { View, Text, StyleSheet, Image } from "react-native";
 class Graph extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    // console.log(this.props)
     if(props.startTime == null || props.endTime == null){
       // console.log(this.props.updateTime)
-      console.log(this.props)
+      // console.log(this.props)
       // props.updateTime();
-      console.log("反悔啊web反悔哦恩爱吧v恶气")
+      // console.log("反悔啊web反悔哦恩爱吧v恶气")
     }
   }
 
@@ -53,20 +53,20 @@ class Graph extends React.Component {
   displayTime = function (time) {
     this.setTime(time);
     this.props.updateTime;
-    console.log(this.props.title)
-    console.log(this.props.startTime)
-    console.log(this.props.endTime)
+    // console.log(this.props.title)
+    // console.log(this.props.startTime)
+    // console.log(this.props.endTime)
 
-    console.log("this.time: " + this.time)
-    console.log("this.time type: " + typeof(this.time))
-    console.log("this.time type: " + typeof(parseInt(this.time)))
-    console.log("time: " + time)
-    if(typeof(this.time) != "number"){
-      console.log("holy fucking shit ")
-    }
+    // console.log("this.time: " + this.time)
+    // console.log("this.time type: " + typeof(this.time))
+    // console.log("this.time type: " + typeof(parseInt(this.time)))
+    // console.log("time: " + time)
+    // if(typeof(this.time) != "number"){
+    //   console.log("holy fucking shit ")
+    // }
     if(isNaN(this.time) == false){
-      console.log(this.time)
-      console.log(isNaN(this.time))
+      // console.log(this.time)
+      // console.log(isNaN(this.time))
       return {
         width: 6,
         height: 40,
@@ -76,7 +76,7 @@ class Graph extends React.Component {
         left: this.time,
       };
     }else{
-      console.log("not a number")
+      console.log("graph input not a number")
       return {
         width: 6,
         height: 40,

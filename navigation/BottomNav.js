@@ -44,8 +44,6 @@ const BottomNav = (props) => {
   const {theme} = useContext(ThemeContext);
   const {melatoninEnabled} = useState(false);
   const {caffineEnabled} = useState(false);
-  console.log("主题")
-  console.log(theme)
     // console.log("BottomNav Trust me")
     // console.log(this.props.route.params)
     // console.log(this.props.route.params.lightModeEnabled)
@@ -66,7 +64,6 @@ const BottomNav = (props) => {
     //update item
     itemName += "Enabled";
     this.setState({ [itemName]: !this.state[itemName] }, () => {
-      console.log(itemName + this.state[itemName]);
       const updates = {};
       updates[[userID] + "/" + itemName] = this.state[itemName]
         ? "true"

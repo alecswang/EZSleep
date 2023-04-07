@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
@@ -42,16 +42,17 @@ function App () {
   const [theme, setTheme] = useState("dark");
   
   //update theme
-  const updateTheme = useCallback((newTheme) => {
+  const updateTheme = (newTheme) => {
     // let mode;
     console.log("update theme");
-    setTheme(newTheme, () => {
-      console.log("theme: " + newTheme);
-      const updates = {};
-      updates[[userID] + "/theme"] = newTheme;
-      update(ref(database), updates);
-    });
-  }, [userID, setTheme]);
+    setTheme(newTheme)
+  };
+
+  useEffect(() => {
+    const updates = {};
+    updates[[userID] + "/theme"] = theme;
+    update(ref(database), updates);
+  }, [userID, theme, update]);
 
 
     return (

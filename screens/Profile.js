@@ -43,16 +43,27 @@ updates[[uID] + "/theme"] = "dark";
 update(ref(database), updates);
 
 const ProfileScreen = (props) => {
+  
   // Back arrow button
   const nav = useNavigation();
   const {theme, updateTheme } = useContext(ThemeContext);
 
   const [isActive, setIsActive] = useState(theme == "light");
+  const [buttonPressed, setButtonPressed] = useState(false);
 
-  const handleThemeChange= (value) => {
-    updateTheme(value ? "light" : "dark", true)
-    setIsActive((previousState) => !previousState)
-  }
+  // const handleThemeChange= (value) => {
+  //   updateTheme(value ? "light" : "dark")
+  //   setIsActive((previousState) => !previousState)
+  // }
+
+  useEffect(() => {
+    if (buttonPressed) {
+      // Perform side effect after state update
+      updateTheme(theme === "light" ? "dark" : "light")
+      setIsActive((previousState) => !previousState)
+      setButtonPressed(false);
+    }
+  }, [buttonPressed, theme, updateTheme]);
 
   console.log("Profile")
   console.log(theme)
@@ -142,7 +153,7 @@ const ProfileScreen = (props) => {
           </Animated.Text>
           <Switch
             value={isActive}
-            onValueChange={(value)=>handleThemeChange(value)}
+            onValueChange={() => setButtonPressed(true)}
             trackColor={SWITCH_TRACK_COLOR}
             // thumbColor={lightEnabled ? '#3e3e3e' : "#fff096"}
             ios_backgroundColor="#3e3e3e"

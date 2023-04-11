@@ -64,10 +64,12 @@ const ProfileScreen = (props) => {
   
   // Animation for background
   const backgroundAnimation = useAnimatedStyle(() => {
+    let prevColor = Themes.dark.backgroundColor;
+    let newColor = Themes.light.backgroundColor;
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
-      [Themes.dark.backgroundColor, Themes.light.backgroundColor]
+      [prevColor, newColor]
     );
     return {
       backgroundColor,
@@ -125,11 +127,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* Theme toggle container */}
         <View style={styles.container}>
@@ -147,11 +149,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* Melatonin toggle container */}
         <View style={styles.container}>
@@ -169,11 +171,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* Caffine toggle container */}
         <View style={styles.container}>
@@ -191,11 +193,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* Sleep Needed */}
         <View style={styles.container}>
@@ -205,11 +207,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* Wake Time Goal */}
         <View style={styles.container}>
@@ -219,11 +221,11 @@ const ProfileScreen = (props) => {
         </View>
         {/* dividing line */}
         <View
-          style={{
+          style={[{
             borderBottomColor: "black",
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderWidth: 1,
-          }}
+            borderWidth: 0.4,
+          }, Themes[theme]]}
         />
         {/* <TimePicker
           value="06:00 PM"
